@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101719" />
+  <title>Expedição — Marquês do Herval</title>
+  <meta name="description" content="Narrativa cartográfica da expedição comandada por Manoel Luís Osório." />
+  <link rel="preload" as="image" href="public/assets/mapa-1857-mobile.jpg" media="(max-width: 1100px), (pointer: coarse)" />
+  <link rel="preload" as="image" href="public/assets/mapa-1857.jpg" media="(min-width: 1101px) and (pointer: fine)" />
+  <link rel="stylesheet" href="styles.css?revisao=52" />
+  <link rel="stylesheet" href="design.css?revisao=52" />
+</head>
+<body>
+  <main id="experience">
+    <section id="cover" class="cover is-visible" aria-label="Abertura da apresentação">
+      <div class="cover-map-viewport" aria-hidden="true"><div class="cover-map-stage">
+        <picture class="responsive-map-picture">
+          <source media="(max-width: 1100px), (pointer: coarse)" srcset="public/assets/mapa-1857-mobile.jpg" />
+          <img class="cover-map" src="public/assets/mapa-1857.jpg" width="8284" height="7941" decoding="async" fetchpriority="high" alt="" />
+        </picture>
+      </div>
+      </div>
+      <div class="cover-shade" aria-hidden="true"></div>
+      <div class="cover-frame" aria-hidden="true"><span></span></div>
+      <div class="cover-content">
+        <div class="regiment">
+          <p>4º Regimento de Cavalaria Blindado</p>
+          <div class="regiment-seal"><img src="public/assets/brasao.png" width="160" height="160" alt="Brasão do 4º Regimento de Cavalaria Blindado" /></div>
+        </div>
+        <div class="cover-title">
+          <h1>Expedição</h1>
+          <h2>Marquês do Herval</h2>
+        </div>
+        <div class="cover-footer">
+          <div class="title-rule" aria-hidden="true"><span></span></div>
+          <p class="dragons">Dragões do Rio Grande</p>
+          <button id="begin" class="continue-cue" type="button"><span class="cue-label-pointer">Entrar na apresentação</span><span class="cue-label-touch">Toque para entrar</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="validationPage" class="validation-page" aria-label="Validação cartográfica" aria-hidden="true" tabindex="-1">
+      <div class="validation-map-viewport" aria-hidden="true"><div class="validation-map-stage">
+        <picture class="responsive-map-picture">
+          <source media="(max-width: 1100px), (pointer: coarse)" srcset="public/assets/mapa-1857-mobile.jpg" />
+          <img class="validation-map" src="public/assets/mapa-1857.jpg" width="8284" height="7941" decoding="async" alt="" />
+        </picture>
+      </div>
+      </div>
+      <div class="validation-shade" aria-hidden="true"></div>
+      <div class="cover-frame validation-frame" aria-hidden="true"><span></span></div>
+      <div class="validation-content">
+        <h2><span>Validação Cartográfica</span><span class="validation-subtitle">da Expedição de <em>1857</em></span></h2>
+        <div class="validation-rule" aria-hidden="true"><span></span></div>
+        <p>4º Regimento de Cavalaria Blindado <b>—</b> Dragões do Rio Grande</p>
+        <p class="validation-year">Pesquisa de Campo 2026</p>
+        <button id="validationContinue" class="continue-cue" type="button" aria-label="Continuar para o mapa histórico"><span class="cue-label-pointer">Continuar para o mapa</span><span class="cue-label-touch">Toque para continuar</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      </div>
+    </section>
+
+    <section id="mapScene" class="map-scene" aria-label="Mapa histórico interativo" tabindex="-1">
+      <div id="camera" class="camera">
+        <div class="historic-map-surface">
+          <div id="historicRasterWorld" class="historic-raster-world">
+            <picture class="responsive-map-picture">
+              <source media="(max-width: 1100px), (pointer: coarse)" srcset="public/assets/mapa-1857-mobile.jpg" />
+              <img class="historic-map" src="public/assets/mapa-1857.jpg" width="8284" height="7941" decoding="async" alt="Mapa histórico do Rio Grande do Sul" draggable="false" />
+            </picture>
+          </div>
+        </div>
+        <div class="map-world">
+          <svg class="routes" viewBox="0 0 8284 7941" role="img" aria-label="Rotas da expedição">
+            <defs>
+              <filter id="routeShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
+                <feOffset dy="6" result="offset"/>
+                <feColorMatrix in="offset" values="0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0 0.03 0 0 0 .45 0"/>
+                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <radialGradient id="locationFill"><stop offset="0" stop-color="#f8e7ba"/><stop offset="1" stop-color="#b99554"/></radialGradient>
+            </defs>
+
+            <!-- Vetores transferidos do recorte de referência para a matriz do mapa original. -->
+            <g id="mapAnnotations" transform="matrix(.568 0 0 .568 1530.568 166.584)">
+            <path id="route1" class="route" d="M2557 2164 C2525 2105 2516 2025 2525 1955 C2536 1855 2588 1790 2678 1742 C2745 1707 2824 1696 2885 1696 C2915 1696 2940 1696 2965 1696" />
+            <path id="route2" class="route" d="M2557 2164 C2528 2072 2532 1945 2572 1849 C2624 1728 2727 1588 2849 1507 C2938 1448 3004 1368 2995 1311 C2984 1249 2922 1225 2865 1242 C2797 1263 2738 1309 2653 1328 C2554 1350 2462 1394 2409 1475 C2351 1564 2321 1658 2303 1703 C2284 1744 2227 1751 2197 1760 C2112 1787 2038 1858 2026 1923 C2013 1991 2084 2055 2164 2094 C2250 2151 2340 2210 2441 2205 C2490 2202 2535 2182 2557 2164" />
+            <path id="route3" class="route" d="M2557 2164 C2790 2075 3060 1925 3265 1780 C3440 1655 3525 1435 3638 1218 C3745 1008 3800 884 3970 786 C4075 730 4228 714 4332 737" />
+
+            <g id="hervais" class="hervais">
+              <ellipse class="hervais-region" cx="3748" cy="1108" rx="315" ry="278" />
+              <text x="3748" y="785">Região dos Grandes e Valiosos Hervais</text>
+              <image class="hervais-image hervais-image-a" href="public/assets/pequeno-herval.png" x="3535" y="1000" width="190" height="127" preserveAspectRatio="xMidYMid meet" />
+              <image class="hervais-image hervais-image-b" href="public/assets/pequeno-herval.png" x="3748" y="1080" width="170" height="114" preserveAspectRatio="xMidYMid meet" />
+            </g>
+
+            <g id="secondDiscoveries" class="second-discoveries" aria-label="Pequeno erval e laranjal encontrados na segunda tentativa">
+              <g class="discovery discovery-erval">
+                <text x="2050" y="1745">Pequeno Herval</text>
+                <image class="discovery-image" href="public/assets/pequeno-herval.png" x="1980" y="1768" width="140" height="94" preserveAspectRatio="xMidYMid meet" />
+              </g>
+              <g class="discovery discovery-laranjal">
+                <text x="2225" y="1623">Laranjal</text>
+                <image class="discovery-image" href="public/assets/laranjal.png" x="2182" y="1652" width="86" height="86" preserveAspectRatio="xMidYMid meet" />
+              </g>
+            </g>
+
+            <g id="cerroIllustration" class="cerro-illustration" aria-hidden="true">
+              <ellipse class="cerro-shadow" cx="2478" cy="2091" rx="108" ry="12" />
+              <image class="cerro-image" href="public/assets/cerro-marco.png" x="2360" y="1960" width="235" height="132" preserveAspectRatio="xMidYMid meet" />
+            </g>
+
+            <g id="startMarker" class="marker start-marker">
+              <circle class="marker-halo" cx="2557" cy="2164" r="72" />
+              <circle class="marker-ring" cx="2557" cy="2164" r="38" />
+              <circle class="marker-core" cx="2557" cy="2164" r="12" />
+              <path class="leader" d="M2595 2126 L2644 2078 L2832 2078" />
+              <text x="2662" y="2062">Cerro do Inhacurutum</text>
+            </g>
+
+            <g id="portoMarker" class="marker porto-marker">
+              <circle class="marker-halo" cx="2120" cy="1835" r="62" />
+              <circle class="marker-ring" cx="2120" cy="1835" r="34" />
+              <circle class="marker-core" cx="2120" cy="1835" r="10" />
+              <path class="leader" d="M2086 1801 L2037 1752 L1877 1752" />
+              <text class="align-end" x="1856" y="1733">Atual Munícipio de Porto Xavier - RS</text>
+            </g>
+
+            <g id="arrivalMarker1" class="arrival-marker" transform="translate(2965 1696)" aria-hidden="true">
+              <circle class="arrival-halo" r="48" />
+              <circle class="arrival-ring" r="23" />
+              <circle class="arrival-core" r="7" />
+            </g>
+            <g id="arrivalMarker2" class="arrival-marker" transform="translate(2557 2164)" aria-hidden="true">
+              <circle class="arrival-halo" r="48" />
+              <circle class="arrival-ring" r="23" />
+              <circle class="arrival-core" r="7" />
+            </g>
+            <g id="arrivalMarker3" class="arrival-marker" transform="translate(4332 737)" aria-hidden="true">
+              <circle class="arrival-halo" r="48" />
+              <circle class="arrival-ring" r="23" />
+              <circle class="arrival-core" r="7" />
+            </g>
+
+            <g id="expeditionUnit" class="expedition-unit" aria-hidden="true">
+              <ellipse class="unit-ground-shadow" cx="0" cy="1" rx="111" ry="11" />
+              <g id="unitMotion" class="unit-motion">
+                <g id="unitFacing" class="unit-facing">
+                  <g class="march-dust">
+                    <ellipse class="dust dust-a" cx="-138" cy="0" rx="13" ry="6" />
+                    <ellipse class="dust dust-b" cx="-162" cy="-1" rx="10" ry="5" />
+                    <ellipse class="dust dust-c" cx="-184" cy="1" rx="8" ry="4" />
+                  </g>
+                  <image class="unit-troops" href="public/assets/tropas-infantaria.png" x="-130" y="-112" width="260" height="130" preserveAspectRatio="xMidYMid meet" />
+                </g>
+                <g class="unit-commander">
+                  <path d="M0 -122 L0 -112" />
+                  <image class="unit-osorio" href="public/assets/osorio.png" x="-46" y="-258" width="92" height="136" preserveAspectRatio="xMidYMid meet" />
+                </g>
+              </g>
+            </g>
+
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="presentation-frame" aria-hidden="true"><span></span></div>
+
+      <aside id="historicalInfo" class="historical-info" aria-label="Contextos históricos da expedição">
+        <button id="historyMenuToggle" class="history-menu-toggle" type="button" aria-label="Abrir contextos históricos" aria-controls="historyMenuPanel" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+        <section id="historyMenuPanel" class="history-menu-panel" aria-label="Títulos dos contextos históricos" aria-hidden="true">
+          <header class="history-panel-heading">
+            <div><small>Expedição de 1857</small><h2>Contextos históricos</h2></div>
+            <button id="historyCollapse" type="button" aria-label="Recolher contextos históricos"><span>Recolher</span><i>↑</i></button>
+          </header>
+          <nav class="history-topic-list" aria-label="Selecione um contexto histórico">
+            <button type="button" data-history-topic="vaqueanos"><span>Vaqueanos Laureano de Vargas<br />e Jesuíno da Silva Nunes</span><i>→</i></button>
+            <button type="button" data-history-topic="indigenas"><span>Indígenas de Nonoai</span><i>→</i></button>
+            <button type="button" data-history-topic="agrimensor"><span>Agrimensor Francisco Rave</span><i>→</i></button>
+            <button type="button" data-history-topic="capitao"><span>Capitão Tristão de Araújo Nóbrega</span><i>→</i></button>
+            <button type="button" data-history-topic="objetivo"><span>Objetivo da Missão</span><i>→</i></button>
+          </nav>
+        </section>
+
+        <article id="historyDetail" class="history-detail-panel" aria-hidden="true" aria-live="polite" tabindex="-1">
+          <header>
+            <small>Contexto histórico</small>
+            <button id="historyBack" type="button" aria-label="Voltar aos títulos"><i>←</i><span>Voltar aos títulos</span></button>
+          </header>
+          <div class="history-detail-copy">
+            <h3 id="historyDetailTitle"></h3>
+            <span aria-hidden="true"></span>
+            <p id="historyDetailText"></p>
+          </div>
+        </article>
+      </aside>
+
+      <aside class="map-controls" aria-label="Controles do mapa">
+        <div class="map-controls__heading">
+          <span>Navegação</span>
+          <output id="zoomValue" aria-live="polite">100%</output>
+        </div>
+        <div class="map-controls__buttons">
+          <button id="zoomOut" type="button" aria-label="Diminuir zoom">−</button>
+          <button id="recenter" class="recenter" type="button" aria-label="Restaurar enquadramento">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 5.6A7.7 7.7 0 1 1 4.3 9M4.3 4.8V9h4.2"/></svg>
+          </button>
+          <button id="zoomIn" type="button" aria-label="Aumentar zoom">+</button>
+        </div>
+        <p><i></i>Arraste para explorar</p>
+      </aside>
+
+      <aside id="titleCard" class="title-card">
+        <span id="stageIndex">01</span>
+        <div><p id="stageKicker">Ponto de partida</p><h3 id="stageTitle">Cerro do Inhacurutum</h3><span id="stageDuration" class="stage-duration"></span></div>
+      </aside>
+
+      <nav class="timeline" aria-label="Etapas da apresentação">
+        <button id="prev" aria-label="Voltar">←</button>
+        <div id="dots"></div>
+        <button id="next" aria-label="Avançar">→</button>
+      </nav>
+      <div class="instruction"><span>Scroll: zoom</span><i></i><span>Setas: acontecimentos</span></div>
+      <button id="modernMapButton" class="map-switch map-switch-next" type="button" aria-controls="costPage" aria-expanded="false">
+        <span><small>Continuação</small><strong>Custos da expedição</strong></span><i aria-hidden="true">→</i>
+      </button>
+    </section>
+
+    <section id="costPage" class="cost-page" aria-label="Custos da Expedição de 1857" aria-hidden="true" tabindex="-1">
+      <div class="cost-map-stage" aria-hidden="true">
+        <picture class="responsive-map-picture">
+          <source media="(max-width: 1100px), (pointer: coarse)" srcset="public/assets/mapa-1857-mobile.jpg" />
+          <img class="cost-map" src="public/assets/mapa-1857.jpg" alt="" />
+        </picture>
+      </div>
+      <div class="cost-shade" aria-hidden="true"></div>
+      <div class="cover-frame cost-frame" aria-hidden="true"><span></span></div>
+
+      <div class="cost-content">
+        <button id="costBack" class="cost-mobile-back" type="button">← Voltar ao mapa histórico</button>
+        <header class="cost-heading">
+          <small>Levantamento da expedição</small>
+          <h2>Custos da Expedição de 1857</h2>
+          <span aria-hidden="true"></span>
+        </header>
+
+        <p class="cost-scroll-hint">Deslize a tabela para os lados para consultar todas as colunas.</p>
+        <div class="cost-table-shell" role="region" aria-label="Tabela de custos da expedição" tabindex="0">
+          <table class="cost-table">
+            <colgroup>
+              <col class="cost-col-product" />
+              <col class="cost-col-daily" />
+              <col class="cost-col-period" />
+              <col class="cost-col-current" />
+              <col class="cost-col-total" />
+            </colgroup>
+            <tbody class="payroll-table-body">
+              <tr class="cost-section-row"><th colspan="5">Custo geral da folha de pagamento da expedição de 1857</th></tr>
+              <tr class="cost-context-row"><td colspan="5">Tomando por base o mês de Agosto de 1857, que totalizou <strong>1.399$292 mil réis</strong>.</td></tr>
+              <tr><th colspan="3">Total dos 4 (quatro) meses de expedição em réis</th><td colspan="2"><strong>5.597$168 mil réis</strong></td></tr>
+              <tr><th colspan="3">Custo total da folha de pagamento da expedição, em moeda corrente (reais)</th><td colspan="2"><strong>R$ 688.450 mil reais</strong></td></tr>
+            </tbody>
+            <tbody class="food-table-body">
+              <tr class="cost-section-row"><th colspan="5">Custo geral de alimentação da expedição de 1857</th></tr>
+              <tr class="cost-column-row">
+                <th>Produto</th>
+                <th>Quantidade diária por homem</th>
+                <th>Quantidade total por homem — 120 dias</th>
+                <th>Custo convertido em moeda corrente</th>
+                <th>Total em moeda corrente</th>
+              </tr>
+              <tr><td>Carne</td><td>500 g</td><td>60 kg</td><td>42 reais, o quilo</td><td>2.520 reais por homem</td></tr>
+              <tr><td>Farinha de mandioca</td><td>300 g</td><td>40 kg</td><td>15 reais, o quilo</td><td>600 reais por homem</td></tr>
+              <tr><td>Feijão</td><td>200 g</td><td>24 kg</td><td>20 reais, o quilo</td><td>48 reais por homem</td></tr>
+              <tr><td>Cachaça</td><td>50 a 100 ml</td><td>6 a 12 litros</td><td>Sem cotação disponível</td><td>—</td></tr>
+              <tr><td>Bolacha dura militar</td><td>100 g</td><td>12 kg</td><td>Era confeccionada no quartel</td><td>—</td></tr>
+              <tr><td>Café</td><td>25 g</td><td>3 kg</td><td>35 reais, o quilo</td><td>105 reais por homem</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><th colspan="3">Total por homem <small>Total de homens empregados: 45 homens, entre militares e civis.</small></th><td colspan="2"><strong>3.273,00 por homem</strong></td></tr>
+              <tr><th colspan="4">Custo total de alimentação</th><td><strong>R$ 147.285,00 reais</strong></td></tr>
+              <tr class="cost-grand-total"><th colspan="4">Total geral dos custos da Expedição de 1857</th><td><strong>R$ 835.735,00 reais</strong></td></tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <footer class="cost-footer">
+          <p><strong>Observação:</strong> Não estão considerados os custos com temperos, cigarro, doces e outros materiais e equipamentos que possam ter sido adquiridos especificamente.</p>
+          <button id="costContinue" type="button" aria-label="Prosseguir para o mapa atual"><span>Prosseguir ao mapa atual</span><i></i></button>
+        </footer>
+      </div>
+    </section>
+
+    <section id="modernScene" class="modern-scene is-annotated" aria-label="Mapa atual do Rio Grande do Sul" aria-hidden="true" tabindex="-1">
+      <div id="modernCamera" class="modern-camera">
+        <div id="modernWorld" class="modern-world">
+      <picture class="responsive-map-picture">
+        <source id="modernMobileSource" media="(max-width: 1100px), (pointer: coarse)" />
+        <img id="modernMapRaster" class="modern-map-raster" width="8000" height="8000" decoding="async" alt="Mapa do Rio Grande do Sul com cidades, rodovias BR e ERS e rios, importado do PDF fornecido" draggable="false" />
+      </picture>
+      <svg class="modern-map-canvas" viewBox="0 0 8000 8000" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa do Rio Grande do Sul com cidades, rodovias BR e ERS e rios, importado do PDF fornecido">
+        <!-- Registered to the user's marked reference: screen = original * 1.152 + (-2721.2, -1112.8). -->
+        <g id="modernSavedAnnotations" transform="matrix(.868055556 0 0 .868055556 2362.152778 965.972222)">
+        <g id="modernComandai" class="modern-river-group">
+          <path class="modern-river-path modern-river-flow river-comandai" d="M337 456 C350 456 345 465 339 465 C330 475 346 480 355 477 C360 475 357 470 362 469 C367 467 361 479 369 476 C380 471 389 471 379 477 C365 483 386 482 390 489 C394 495 388 508 393 513 C402 519 409 507 418 511 C430 513 416 518 417 521 C418 524 430 522 434 529 C439 535 424 536 429 542 C432 549 447 541 455 543 C465 536 466 543 459 548 C455 553 461 555 461 559" />
+          <path id="modernComandaiPath" class="modern-river-path modern-river-trace river-comandai" d="M337 456 C350 456 345 465 339 465 C330 475 346 480 355 477 C360 475 357 470 362 469 C367 467 361 479 369 476 C380 471 389 471 379 477 C365 483 386 482 390 489 C394 495 388 508 393 513 C402 519 409 507 418 511 C430 513 416 518 417 521 C418 524 430 522 434 529 C439 535 424 536 429 542 C432 549 447 541 455 543 C465 536 466 543 459 548 C455 553 461 555 461 559" />
+          <g id="modernComandaiEnd" class="river-endpoint" transform="translate(461 559)">
+            <circle class="river-endpoint-halo" r="15"/><circle class="river-endpoint-ring" r="8"/><circle class="river-endpoint-core" r="3"/>
+            <path class="river-endpoint-leader" pathLength="1" d="M7 -7 L23 -24 H172"/>
+            <text x="30" y="-35">Rio Comandaí</text>
+          </g>
+        </g>
+        <g id="modernAmandau" class="modern-river-group">
+          <path class="modern-river-path modern-river-flow river-amandau" d="M397 367 C405 376 412 388 417 383 C421 379 408 377 414 369 C413 355 417 362 423 370 C430 378 439 365 446 369 C454 373 446 387 448 392 C443 403 439 399 442 394 C440 388 455 391 454 386 C454 380 469 382 471 387 C468 395 475 393 480 397 C486 402 491 391 491 402 C499 410 499 397 502 407 C506 421 512 412 516 424 C520 430 532 427 534 421 C528 410 535 403 537 419 C542 425 550 415 553 423 C558 433 552 413 563 413 C577 411 573 432 585 425 C595 422 590 441 601 444" />
+          <path id="modernAmandauPath" class="modern-river-path modern-river-trace river-amandau" d="M397 367 C405 376 412 388 417 383 C421 379 408 377 414 369 C413 355 417 362 423 370 C430 378 439 365 446 369 C454 373 446 387 448 392 C443 403 439 399 442 394 C440 388 455 391 454 386 C454 380 469 382 471 387 C468 395 475 393 480 397 C486 402 491 391 491 402 C499 410 499 397 502 407 C506 421 512 412 516 424 C520 430 532 427 534 421 C528 410 535 403 537 419 C542 425 550 415 553 423 C558 433 552 413 563 413 C577 411 573 432 585 425 C595 422 590 441 601 444" />
+          <g id="modernAmandauEnd" class="river-endpoint" transform="translate(601 444)">
+            <path class="river-endpoint-leader" pathLength="1" d="M0 0 L23 13 H210"/>
+            <circle class="river-endpoint-halo" r="15"/><circle class="river-endpoint-ring" r="8"/><circle class="river-endpoint-core" r="3"/>
+            <text x="30" y="-27"><tspan x="30">Rio Amandaú</tspan><tspan class="river-historic-name" x="30" dy="21">(Antigo Rio Pindaí)</tspan></text>
+          </g>
+        </g>
+        <g id="modernBugre" class="modern-river-group">
+          <path class="modern-river-path modern-river-flow river-bugre" d="M505 269 C512 265 515 252 522 255 C527 257 515 268 527 267 C535 269 540 268 545 262 C551 254 548 269 553 267 C561 268 553 274 565 273 C574 271 579 277 578 285 C578 291 588 289 584 296 C577 302 595 302 599 308 C599 316 606 316 610 322 C615 328 617 318 622 322 C621 336 630 328 637 329 C646 328 652 333 655 340 C667 339 653 344 668 350" />
+          <path id="modernBugrePath" class="modern-river-path modern-river-trace river-bugre" d="M505 269 C512 265 515 252 522 255 C527 257 515 268 527 267 C535 269 540 268 545 262 C551 254 548 269 553 267 C561 268 553 274 565 273 C574 271 579 277 578 285 C578 291 588 289 584 296 C577 302 595 302 599 308 C599 316 606 316 610 322 C615 328 617 318 622 322 C621 336 630 328 637 329 C646 328 652 333 655 340 C667 339 653 344 668 350" />
+          <g id="modernCebolatyEnd" class="river-endpoint" transform="translate(668 350)">
+            <circle class="river-endpoint-halo" r="15"/><circle class="river-endpoint-ring" r="8"/><circle class="river-endpoint-core" r="3"/>
+            <path class="river-endpoint-leader" pathLength="1" d="M7 -7 L23 -24 H172"/>
+            <text x="30" y="-35">Rio Cebolaty</text>
+          </g>
+        </g>
+        <g id="modernPortoMarker" class="modern-landmark marker-porto" transform="translate(245 514)">
+          <circle class="modern-marker-halo" r="31" />
+          <circle class="modern-marker-ring" r="15" />
+          <circle class="modern-marker-core" r="5" />
+          <path d="M-10 -7 L-25 -13 H-215" />
+          <text x="-215" y="-44"><tspan x="-215">Município de</tspan><tspan x="-215" dy="23">Porto Xavier - RS</tspan></text>
+        </g>
+        <g id="modernCerroMarker" class="modern-landmark marker-cerro" transform="translate(370 681)">
+          <circle class="modern-marker-halo" r="31" />
+          <circle class="modern-marker-ring" r="15" />
+          <circle class="modern-marker-core" r="5" />
+          <path d="M-10 -9 L-38 -32 H-235" />
+          <text x="-235" y="-43">Cerro do Inhacurutum</text>
+        </g>
+        <g id="modernLucenaMarker" class="modern-landmark marker-lucena" transform="translate(374 439)">
+          <circle class="modern-marker-halo" r="31" />
+          <circle class="modern-marker-ring" r="15" />
+          <circle class="modern-marker-core" r="5" />
+          <path d="M-10 -8 L-38 -37 H-324" />
+          <text x="-324" y="-69"><tspan x="-324">Município de</tspan><tspan x="-324" dy="23">Porto Lucena - RS</tspan></text>
+        </g>
+        <g id="modernVeraCruzMarker" class="modern-landmark marker-vera-cruz" transform="translate(501 295)">
+          <circle class="modern-marker-halo" r="31" />
+          <circle class="modern-marker-ring" r="15" />
+          <circle class="modern-marker-core" r="5" />
+          <path d="M-10 -8 L-35 -17 H-281" />
+          <text x="-281" y="-50"><tspan x="-281">Município de</tspan><tspan x="-281" dy="23">Porto Vera Cruz - RS</tspan></text>
+        </g>
+        </g>
+      </svg>
+        </div>
+      </div>
+      <div class="modern-map-tone" aria-hidden="true"></div>
+      <div class="modern-vignette" aria-hidden="true"></div>
+      <div class="presentation-frame" aria-hidden="true"><span></span></div>
+      <button id="historicMapButton" class="map-switch map-switch-back" type="button">
+        <i aria-hidden="true">←</i><span><small>Retornar</small><strong>Mapa histórico</strong></span>
+      </button>
+      <aside class="map-controls modern-map-controls" aria-label="Controles do mapa atual">
+        <div class="map-controls__heading">
+          <span>Navegação</span>
+          <output id="modernZoomValue" aria-live="polite">100%</output>
+        </div>
+        <div class="map-controls__buttons">
+          <button id="modernZoomOut" type="button" aria-label="Diminuir zoom do mapa atual">−</button>
+          <button id="modernRecenter" class="recenter" type="button" aria-label="Restaurar enquadramento do mapa atual">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 5.6A7.7 7.7 0 1 1 4.3 9M4.3 4.8V9h4.2"/></svg>
+          </button>
+          <button id="modernZoomIn" type="button" aria-label="Aumentar zoom do mapa atual">+</button>
+        </div>
+        <p><i></i>Arraste para explorar</p>
+      </aside>
+      <aside class="modern-title-card">
+        <span id="modernStageKicker">Mapa atual</span>
+        <h3 id="modernStageTitle">Rio Grande do Sul</h3>
+      </aside>
+      <nav class="timeline modern-timeline" aria-label="Marcações do mapa atual">
+        <button id="modernPrev" aria-label="Marcação anterior">←</button>
+        <div id="modernDots"></div>
+        <button id="modernNext" aria-label="Próxima marcação">→</button>
+      </nav>
+      <div class="instruction modern-instruction"><span>Scroll: zoom</span><i></i><span>Arraste para explorar</span></div>
+    </section>
+
+    <div id="mapTransition" class="map-transition" role="status" aria-label="Transição do mapa histórico para o mapa atual" aria-hidden="true" tabindex="-1">
+      <!-- Same composition, exported once so the animation does not mask two 8K maps. -->
+      <img class="transition-atlas" src="public/assets/transicao-mapas.jpg" width="1920" height="1280" alt="" aria-hidden="true" decoding="async" draggable="false" />
+      <div class="transition-wind" aria-hidden="true"></div>
+      <div class="transition-content">
+        <!-- Functional progress icon adapted from Lucide Hourglass (ISC); see LICENCAS.txt. -->
+        <svg class="transition-hourglass" viewBox="0 0 24 28" aria-hidden="true">
+          <defs>
+            <linearGradient id="hourglassBrass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f1dfb5"/><stop offset=".5" stop-color="#bc9459"/><stop offset="1" stop-color="#e9cb90"/>
+            </linearGradient>
+            <linearGradient id="hourglassSand" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#efcf8d"/><stop offset="1" stop-color="#b79153"/>
+            </linearGradient>
+            <clipPath id="hourglassUpperClip" clipPathUnits="userSpaceOnUse">
+              <rect class="hourglass-upper-mask" x="6" y="5" width="12" height="8"/>
+            </clipPath>
+            <clipPath id="hourglassLowerClip" clipPathUnits="userSpaceOnUse">
+              <path d="M7.7 21.3V17.828q0-.53.38-.92L12 12.99l3.92 3.92q.38.39.38.92V21.3Z"/>
+            </clipPath>
+          </defs>
+          <g transform="translate(0 2)">
+            <path class="hourglass-glass" d="M7 2h10v4.172a2 2 0 0 1-.586 1.414L12 12l4.414 4.414A2 2 0 0 1 17 17.828V22H7v-4.172a2 2 0 0 1 .586-1.414L12 12 7.586 7.586A2 2 0 0 1 7 6.172Z"/>
+            <path class="hourglass-sand" clip-path="url(#hourglassUpperClip)" d="M7.7 5.2h8.6v.97q0 .53-.38.92L12 11.01 8.08 7.09q-.38-.39-.38-.92Z"/>
+            <g class="hourglass-flow">
+              <path class="hourglass-stream" d="M12 11.1v10.2"/>
+              <circle class="hourglass-grain grain-one" cx="11.8" cy="12.4" r=".12"/>
+              <circle class="hourglass-grain grain-two" cx="12.15" cy="12.4" r=".1"/>
+              <circle class="hourglass-grain grain-three" cx="12" cy="12.4" r=".09"/>
+            </g>
+            <g clip-path="url(#hourglassLowerClip)">
+              <path class="hourglass-sand hourglass-lower-sand" d="M6.8 21.3h10.4v-.6c-1.1-1.45-2.8-5.7-5.2-6.7-2.4 1-4.1 5.25-5.2 6.7Z"/>
+            </g>
+            <g class="hourglass-outline">
+              <path d="M5 22h14"/><path d="M5 2h14"/>
+              <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+              <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+            </g>
+          </g>
+        </svg>
+        <p class="transition-caption">Da história ao presente</p>
+        <output id="transitionSeconds" class="transition-seconds" aria-hidden="true">5 s</output>
+        <div class="transition-track" aria-hidden="true"><div class="transition-progress"></div></div>
+      </div>
+    </div>
+  </main>
+  <script src="app.js?revisao=52"></script>
+</body>
+</html>
