@@ -612,7 +612,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .timeline #dots, .timeline #modernDots { flex-direction: column; gap: 8px; padding: 0; }
   .timeline i { width: 5px; height: 5px; }
   .timeline i.active { width: 5px; height: 22px; }
-  .title-card, .title-card.is-attempt { left: max(32px, env(safe-area-inset-left)); right: max(32px, env(safe-area-inset-right)); bottom: calc(var(--safe-bottom) + 86px); width: auto; max-width: none; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; padding: 0 0 16px; }
+  .title-card, .title-card.is-attempt { left: max(32px, env(safe-area-inset-left)); right: max(32px, env(safe-area-inset-right)); bottom: calc(var(--safe-bottom) + 36px); width: auto; max-width: none; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; padding: 0 0 16px; }
   .title-card > span { align-self: center; padding: 3px 12px 3px 0; font-size: 22px; line-height: 1.3; }
   .title-card > div, .title-card.is-attempt > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 7px 8px; min-width: 0; }
   .title-card h3 { grid-column: 1 / -1; grid-row: 2; width: 100%; min-width: 0; font-size: 13px; line-height: 1.5; letter-spacing: 0; white-space: normal; text-wrap: pretty; overflow-wrap: normal; }
@@ -622,8 +622,8 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .title-card.is-attempt .attempt-detail::before { content: none; }
   .stage-duration { display: none; }
   .stage-duration.is-visible { grid-row: 1; grid-column: 2; align-self: center; display: block; margin: 0; font-size: 8px; line-height: 1.3; letter-spacing: .08em; white-space: nowrap; }
-  .map-switch-next { right: max(20px, env(safe-area-inset-right)); bottom: calc(var(--safe-bottom) + 218px); min-height: 48px; }
-  .modern-title-card { left: max(32px, env(safe-area-inset-left)); right: max(48px, env(safe-area-inset-right)); bottom: calc(var(--safe-bottom) + 48px); max-width: none; padding-bottom: 16px; }
+  .map-switch-next { right: max(70px, calc(env(safe-area-inset-right) + 52px)); bottom: calc(var(--safe-bottom) + 218px); min-height: 48px; }
+  .modern-title-card { left: max(32px, env(safe-area-inset-left)); right: max(48px, env(safe-area-inset-right)); bottom: calc(var(--safe-bottom) + 36px); max-width: none; padding-bottom: 16px; }
   .modern-title-card > span { font-size: 9px; line-height: 1.5; letter-spacing: .1em; }
   .modern-title-card h3 { font-size: 13px; line-height: 1.5; white-space: normal; text-wrap: pretty; }
   .modern-timeline { display: flex; }
@@ -656,7 +656,9 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .cost-table tfoot td { padding-right: 3px; }
   .cost-table tfoot th small { font-size: 6px; line-height: 1.25; }
   .cost-table .cost-grand-total th, .cost-table .cost-grand-total td { padding-block: 7px; }
-  .cost-table .cost-grand-total strong { font-size: 7.5px; }
+  .cost-table .cost-grand-total td,
+  .cost-table .cost-grand-total strong { overflow-wrap: normal; word-break: normal; hyphens: none; }
+  .cost-table .cost-grand-total strong { font-size: 6.8px; letter-spacing: -.01em; }
   .cost-footer { gap: 28px; margin-top: 28px; }
   .cost-footer > p { font-size: 10px; line-height: 1.6; }
   .cost-footer button { min-height: 50px; margin-top: 4px; }
