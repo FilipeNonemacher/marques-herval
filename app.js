@@ -953,6 +953,20 @@ $('#recenter').addEventListener('click', () => {
 function bindMapGestures(surface, { enabled, readView, position, limitZoom, setPan }) {
   const pointers = new Map();
   let gesture = null;
+  let sequenceMoved = false;
+  let sequenceHadPinch = false;
+  let lastTouchTap = null;
+  let suppressNativeDoubleClickUntil = 0;
+
+  const zoomAtGesture = (clientX, clientY) => {
+    if (surface === camera) {
+      useManualTransition();
+      zoomHistoricAt(clientX, clientY, view.zoom * 1.38);
+    } else {
+      useModernManualTransition();
+      zoomModernAt(clientX, clientY, modernView.zoom * 1.38);
+    }
+  };
   const reset = () => {
     pointers.clear(); gesture = null; setPan(null);
     surface.classList.remove('is-dragging');
@@ -961,6 +975,7 @@ function bindMapGestures(surface, { enabled, readView, position, limitZoom, setP
     const [first, second] = [...pointers.values()];
     const current = readView();
     if (second) {
+      sequenceHadPinch = true;
       const cx = (first.x + second.x) / 2, cy = (first.y + second.y) / 2;
       gesture = {
         mode: 'pinch', zoom: current.zoom, distance: Math.max(1, Math.hypot(second.x - first.x, second.y - first.y)),
@@ -977,6 +992,10 @@ function bindMapGestures(surface, { enabled, readView, position, limitZoom, setP
     if (pointers.size && event.pointerType !== 'touch') return;
     if (surface === camera) historicCameraTween = null;
     else modernCameraTween = null;
+    if (!pointers.size) {
+      sequenceMoved = false;
+      sequenceHadPinch = false;
+    }
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     surface.classList.remove('is-manual');
     surface.classList.add('is-dragging');
@@ -990,20 +1009,41 @@ function bindMapGestures(surface, { enabled, readView, position, limitZoom, setP
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     const [first, second] = [...pointers.values()];
     if (gesture.mode === 'pinch' && second) {
+      sequenceMoved = true;
       const zoom = limitZoom(gesture.zoom * Math.hypot(second.x - first.x, second.y - first.y) / gesture.distance);
       const cx = (first.x + second.x) / 2, cy = (first.y + second.y) / 2;
       position(gesture.x - (cx - innerWidth / 2) / zoom, gesture.y - (cy - innerHeight / 2) / zoom, zoom);
     } else {
+      if (Math.hypot(first.x - gesture.clientX, first.y - gesture.clientY) > 9) sequenceMoved = true;
       position(gesture.x - (first.x - gesture.clientX) / gesture.zoom, gesture.y - (first.y - gesture.clientY) / gesture.zoom, gesture.zoom);
     }
   });
   const finish = (event) => {
-    if (!pointers.delete(event.pointerId)) return;
+    if (!pointers.has(event.pointerId)) return;
+    const isLastPointer = pointers.size === 1;
+    if (event.type === 'pointerup' && event.pointerType === 'touch' && isLastPointer && !sequenceMoved && !sequenceHadPinch) {
+      const now = performance.now();
+      const closeToLastTap = lastTouchTap && Math.hypot(event.clientX - lastTouchTap.x, event.clientY - lastTouchTap.y) < 34;
+      if (closeToLastTap && now - lastTouchTap.time < 380) {
+        lastTouchTap = null;
+        suppressNativeDoubleClickUntil = now + 650;
+        zoomAtGesture(event.clientX, event.clientY);
+      } else {
+        lastTouchTap = { time: now, x: event.clientX, y: event.clientY };
+      }
+    }
+    pointers.delete(event.pointerId);
     pointers.size ? startGesture() : reset();
   };
   surface.addEventListener('pointerup', finish);
   surface.addEventListener('pointercancel', finish);
   surface.addEventListener('lostpointercapture', finish);
+  surface.addEventListener('dblclick', (event) => {
+    if (!enabled()) return;
+    event.preventDefault();
+    if (performance.now() < suppressNativeDoubleClickUntil) return;
+    zoomAtGesture(event.clientX, event.clientY);
+  });
   return reset;
 }
 
@@ -1021,6 +1061,7 @@ const resetModernGestures = bindMapGestures(modernCamera, {
 });
 
 addEventListener('keydown', (event) => {
+  if ((event.ctrlKey || event.metaKey) && ['+', '=', '-', '0'].includes(event.key)) event.preventDefault();
   if (mapTransitionActive) return;
   if (costActive) {
     if (event.target.closest('button') && [' ', 'Enter'].includes(event.key)) return;
@@ -1099,20 +1140,28 @@ addEventListener('keydown', (event) => {
     showCover();
   }
   if (active >= 0 && ['+', '='].includes(event.key)) {
+    event.preventDefault();
     useManualTransition();
     positionCamera(view.x, view.y, view.zoom * 1.24);
   }
   if (active >= 0 && event.key === '-') {
+    event.preventDefault();
     useManualTransition();
     positionCamera(view.x, view.y, view.zoom / 1.24);
   }
   if (active >= 0 && event.key === '0') {
+    event.preventDefault();
     fitBounds(stages[active].bounds);
   }
 });
 
 addEventListener('wheel', (event) => {
   if (mapTransitionActive) { event.preventDefault(); return; }
+  const activeMapSurface = modernActive ? modernCamera : active >= 0 ? camera : null;
+  if (!activeMapSurface || !activeMapSurface.contains(event.target)) {
+    if (event.ctrlKey) event.preventDefault();
+    return;
+  }
   // Scroll reads the folio/panels. It never advances a presentation page.
   if (costActive || (!modernActive && active < 0)) return;
   if (historicalInfo.classList.contains('is-open') && historicalInfo.contains(event.target)) return;

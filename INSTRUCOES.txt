@@ -38,7 +38,10 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 58
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 59
+
+- Os controles dos acontecimentos permanecem na lateral direita nos dois mapas, inclusive no celular.
+- O zoom nativo do navegador foi bloqueado; toque duplo, pinça e roda do mouse atuam somente sobre os mapas.
 
 - Os tracejados dos rios no mapa atual agora permanecem em movimento continuamente.
 - A sombra das rotas fluviais é preservada também durante o arraste lateral do mapa.
