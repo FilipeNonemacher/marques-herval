@@ -1,0 +1,88 @@
+EXPEDIÇÃO — MARQUÊS DO HERVAL
+
+COMO ABRIR
+1. Extraia todo o conteúdo do arquivo ZIP para uma pasta.
+2. Não separe as pastas nem mova as imagens individualmente.
+3. Abra o arquivo index.html no Google Chrome ou no Microsoft Edge.
+
+CONTROLES DA APRESENTAÇÃO
+- Use as setas do teclado ou os botões da apresentação para avançar e voltar.
+- A roda do mouse controla somente o zoom nos dois mapas; nunca troca os acontecimentos.
+- Dentro da tabela ou dos contextos históricos, a rolagem permanece disponível para leitura.
+- Use os botões − e + no canto superior direito para controlar o zoom.
+- Arraste o mapa com o mouse para explorar a imagem.
+- No segundo mapa, a roda do mouse controla o zoom e os botões na lateral direita
+  percorrem as marcações.
+- As setas continuam funcionando após abrir ou recolher um contexto histórico.
+- Use o botão central do controle de zoom para retornar ao enquadramento da etapa.
+- Pressione Esc para voltar à abertura; no segundo mapa, retorna ao mapa histórico.
+
+NO CELULAR
+- Toque nos botões para entrar e avançar na apresentação.
+- Arraste os mapas com um dedo; use dois dedos ou os botões − e + para o zoom.
+- Na tabela, deslize para cima e para baixo para ler. Todas as colunas aparecem juntas;
+  use dois dedos para ampliar a leitura quando desejar.
+- Use “Prosseguir ao mapa atual” para continuar ou “Voltar ao mapa histórico” para retornar.
+- Os controles e o conteúdo se adaptam à orientação da tela.
+
+TRANSIÇÃO PARA O MAPA ATUAL
+A ampulheta conta cinco segundos. Em seguida, uma passagem suave, como uma brisa,
+revela o mapa durante 1,3 segundo. Os controles são liberados ao terminar a passagem.
+Se o dispositivo estiver configurado para reduzir movimento, a passagem usa
+somente uma breve dissolução, sem deslocamento lateral.
+
+ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
+- index.html: estrutura e conteúdo.
+- styles.css: aparência, tipografia e animações.
+- design.css: identidade visual do atlas digital, painéis e adaptação de telas.
+- app.js: etapas, rotas, zoom e interações.
+- public/assets: mapa, brasão, Osório, tropas e imagens de referência.
+
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 58
+
+- Os tracejados dos rios no mapa atual agora permanecem em movimento continuamente.
+- A sombra das rotas fluviais é preservada também durante o arraste lateral do mapa.
+As imagens e os PDFs originais permanecem intactos. Os dois mapas foram divididos
+em pequenos trechos de 512 pixels; o navegador carrega apenas os trechos visíveis
+e escolhe progressivamente o nível de detalhe necessário. No zoom máximo, esses
+trechos contêm os mesmos pixels dos mapas originais, sem perda de qualidade.
+As páginas de abertura usam um recorte regional de 1600 pixels e começam a aparecer
+com uma prévia incorporada no próprio site. Assim, a primeira tela baixa menos de
+700 KB antes de ficar utilizável, inclusive em conexões móveis lentas.
+O mapa atual começa a ser preparado na página da tabela. A transição aguarda a prévia
+ficar pronta antes de revelar o mapa; se a conexão falhar, permanece uma prévia leve
+e aparece um botão para tentar novamente. O mapa histórico deixa de ocupar memória
+quando o mapa atual é aberto, e vice-versa.
+O mapa histórico e suas marcações mantêm exatamente as mesmas coordenadas.
+Os filtros de cor são processados somente na área visível, e as animações do
+mapa histórico ficam pausadas enquanto ele está encoberto pelo mapa atual.
+As legendas históricas usam até duas linhas no celular, com fonte maior, e todo o
+bloco — número, divisória e texto — fica recuado das bordas. A tabela exibe
+todas as cinco colunas de uma só vez, sem corte horizontal, mantendo a ampliação
+por gesto do navegador. O botão que leva à tabela ganhou distância segura da
+legenda e, no mapa atual, os controles das marcações ficam na lateral direita.
+Durante o arraste, efeitos que não alteram o conteúdo são temporariamente pausados;
+animações fora de cena deixam de consumir processamento. Isso melhora a fluidez
+no computador e no celular sem reduzir a resolução ou remover detalhes dos mapas.
+
+O projeto funciona sem instalação e não depende da internet para carregar sua
+tipografia. Montserrat e Cinzel estão incorporadas na pasta public/assets, garantindo
+as mesmas medidas, pesos e espaçamentos no computador, iPhone, iPad e Android.
+
+Ao publicar, envie também public/assets/map-tiles com todas as subpastas. Os arquivos
+map-assets.js e map-renderer.js são necessários para exibir e ampliar os mapas.
+
+MAPA ATUAL
+O segundo mapa utiliza mapa-atual-br-ers.png (8000 x 8000 pixels), renderizado
+do PDF fornecido Rio_Grande_do_Sul_BR_ERS_com_fundo.pdf, sem alterar seu conteúdo.
+Uma cópia do PDF original está em public/assets/mapa-atual-br-ers-fonte.pdf.
+As marcações seguem a referência enviada pelo usuário: Porto Xavier, Porto Lucena,
+Porto Vera Cruz e Cerro do Inhacurutum em marrom; rios Comandaí, Amandaú
+(Antigo Rio Pindaí) e Cebolaty em azul. Os nomes usam o mesmo tom marrom.
+O mapa atual abre com uma visão regional mais afastada e sem marcações. As setas
+revelam progressivamente os sete locais/cursos; cada rio é desenhado sobre seu
+curso quando sua etapa é alcançada. Ao final do desenho, surge um ponto azul com
+linha-guia e nome acima. Depois, o curso permanece em azul forte, tracejado e com
+movimento discreto, mantendo as marcações anteriores visíveis.
+As aproximações seguintes são moderadas para preservar a leitura da região.
+O zoom e o arraste continuam livres, dentro dos limites da imagem.
