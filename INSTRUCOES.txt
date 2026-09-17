@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 65
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 66
+
+- O contorno após a margem do Rio Uruguay agora segue a curva curta indicada
+  na referência, sem avançar até a extremidade da enseada.
+- A inversão da tropa ocorre no ponto de menor opacidade, enquanto o movimento
+  continua, evitando saltos ou pequenas pausas visuais.
 
 - A mudança de direção no Rio Pindahy recebeu tangentes contínuas e uma curva
   arredondada pelo lado de terra, sem ultrapassar a margem histórica do rio.

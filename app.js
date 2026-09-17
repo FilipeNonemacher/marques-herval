@@ -482,16 +482,27 @@ function placeExpeditionUnit(path, distance) {
   expeditionUnit.setAttribute('transform', `translate(${point.x} ${point.y})`);
   if (previousFacing !== currentFacing) {
     (unitFacing.getAnimations?.() || []).forEach((animation) => animation.cancel());
-    unitFacing.setAttribute('transform', `scale(${currentFacing} 1)`);
-    unitFacing.animate([
+    const nextFacing = currentFacing;
+    const fadeOut = unitFacing.animate([
       { opacity: 1 },
-      { opacity: .62, offset: .48 },
-      { opacity: .62, offset: .52 },
-      { opacity: 1 }
+      { opacity: .42 }
     ], {
-      duration: 360,
-      easing: 'cubic-bezier(.4, 0, .2, 1)'
+      duration: 130,
+      easing: 'cubic-bezier(.4, 0, 1, 1)',
+      fill: 'forwards'
     });
+    fadeOut.onfinish = () => {
+      if (currentFacing !== nextFacing) return;
+      unitFacing.setAttribute('transform', `scale(${nextFacing} 1)`);
+      fadeOut.cancel();
+      unitFacing.animate([
+        { opacity: .42 },
+        { opacity: 1 }
+      ], {
+        duration: 210,
+        easing: 'cubic-bezier(0, 0, .2, 1)'
+      });
+    };
   }
 }
 
