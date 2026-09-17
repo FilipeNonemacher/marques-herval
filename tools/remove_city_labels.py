@@ -128,10 +128,16 @@ def generate_delivery_assets(image_path: Path, assets_dir: Path, manifest_path: 
         for row in range(count):
             for col in range(count):
                 box = (col * 512, row * 512, min((col + 1) * 512, level), min((row + 1) * 512, level))
-                level_image.crop(box).save(level_dir / f"{col}-{row}.webp", "WEBP", quality=88, method=6)
+                level_image.crop(box).save(
+                    level_dir / f"{col}-{row}.webp",
+                    "WEBP",
+                    quality=96,
+                    method=6,
+                    exact=True,
+                )
 
-    preview = image.resize((1600, 1600), Image.Resampling.LANCZOS)
-    preview.save(assets_dir / "map-modern-preview.webp", "WEBP", quality=84, method=6)
+    preview = image.resize((2400, 2400), Image.Resampling.LANCZOS)
+    preview.save(assets_dir / "map-modern-preview.webp", "WEBP", quality=94, method=6, exact=True)
     tiny = image.resize((256, 256), Image.Resampling.LANCZOS)
     buffer = io.BytesIO()
     tiny.save(buffer, "JPEG", quality=62, optimize=True)

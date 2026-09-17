@@ -69,8 +69,8 @@ class TiledMap {
 
     // Request only detail useful at this scale. Full-resolution tiles are used
     // as the user approaches; a wide overview starts with the smaller levels.
-    const density = view.zoom * Math.min(devicePixelRatio || 1, 1.5);
-    const level = levels.find(item => item.scale >= density * .85) || levels[levels.length - 1];
+    const density = view.zoom * Math.min(devicePixelRatio || 1, 2);
+    const level = levels.find(item => item.scale >= density * .95) || levels[levels.length - 1];
     this.level = level;
     const step = tileSize / level.scale;
     const minX = Math.max(0, Math.floor(-left / (step * view.zoom)));
@@ -107,7 +107,7 @@ class TiledMap {
 
   pump() {
     if (!this.active || !this.queue) return;
-    while (this.loading < 4 && this.queue.length) {
+    while (this.loading < 8 && this.queue.length) {
       const item = this.queue.shift();
       if (!this.wanted.has(item.key) || this.tiles.has(item.key)) continue;
       const size = this.definition.tileSize;

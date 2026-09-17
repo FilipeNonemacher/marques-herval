@@ -734,7 +734,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .map-preview, .map-tiles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   .map-preview { background-repeat: no-repeat; }
   .map-tiles { contain: layout paint; }
-  .map-tile { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; opacity: 0; transition: opacity .16s ease; user-select: none; pointer-events: none; }
+  .map-tile { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; opacity: 0; transition: opacity .16s ease; user-select: none; pointer-events: none; image-rendering: auto; backface-visibility: hidden; }
   .map-tile.is-loaded { opacity: 1; }
   .modern-map-canvas { z-index: 3; }
   .map-load-notice { position: absolute; z-index: 15; top: 200px; left: 32px; right: 32px; padding: 16px; background: var(--panel); color: var(--ivory); border: 1px solid var(--panel-line); border-radius: 6px; font-size: 12px; line-height: 1.6; }
