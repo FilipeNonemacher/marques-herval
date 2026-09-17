@@ -475,7 +475,7 @@ function placeExpeditionUnit(path, distance) {
   if (path.id === 'route1') {
     currentFacing = progress < .56 ? 1 : -1;
   } else if (path.id === 'route2') {
-    currentFacing = progress < .345 ? 1 : progress < .79 ? -1 : 1;
+    currentFacing = progress < .35 ? 1 : progress < .74 ? -1 : 1;
   } else {
     currentFacing = 1;
   }
@@ -622,7 +622,7 @@ function render({ animateRoute = true } = {}) {
     route.style.strokeDashoffset = '0';
     route.classList.add('is-visible');
     placeExpeditionUnit(route, length);
-    expeditionUnit.classList.add('is-visible');
+    if (stage.route !== 1) expeditionUnit.classList.add('is-visible');
     arrivalMarkers[stage.route].classList.add('is-visible');
     if (stage.route === 0) firstAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
     if (stage.route === 1) secondAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));

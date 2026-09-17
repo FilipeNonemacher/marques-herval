@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 63
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 64
+
+- O trecho da margem do Rio Uruguay foi simplificado em curvas contínuas,
+  mantidas no lado de terra para não cruzar o traço de água do mapa.
+- As imagens do pequeno herval e do laranjal estão centralizadas nos pontos
+  assinalados na referência cartográfica.
 
 - Ao alcançar a margem do Rio Uruguay, a segunda tentativa segue continuamente
   pela margem, sem retornar ao marcador e sem atravessar o curso d'água.
