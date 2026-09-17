@@ -50,6 +50,7 @@ const historyBack = $('#historyBack');
 const historyTopicButtons = [...document.querySelectorAll('[data-history-topic]')];
 const routeElements = [$('#route1'), $('#route2'), $('#route3')];
 const arrivalMarkers = [$('#arrivalMarker1'), $('#arrivalMarker2'), $('#arrivalMarker3')];
+const firstAttemptMarkers = [$('#firstComandahyMarker'), $('#firstPindahyMarker')];
 const expeditionUnit = $('#expeditionUnit');
 const unitFacing = $('#unitFacing');
 const camera = $('#camera');
@@ -68,7 +69,7 @@ const mobileMapMode = matchMedia('(max-width: 1100px), (pointer: coarse)');
 const stages = [
   { kicker: 'Cartografia histórica', title: 'A região da expedição', bounds: [2382, 500, 4237, 1650] },
   { kicker: 'Ponto de partida', title: 'Cerro do Inhacurutum', bounds: [2720, 1090, 3335, 1550], start: true, cerro: true },
-  { kicker: 'Primeira tentativa', attempt: 'Primeira tentativa', title: 'Travessia do Rio Comandahy por jangada e chegada ao Rio Sto Christo', duration: '7 DIAS', bounds: [2820, 1030, 3330, 1495], route: 0 },
+  { kicker: 'Primeira tentativa', attempt: 'Primeira tentativa', title: 'Travessia do Rio Comandahy, chegada ao Rio Pindahy e retorno ao Cerro do Inhacurutum', duration: '7 DIAS', bounds: [2760, 980, 3370, 1515], route: 0 },
   { kicker: 'Segunda tentativa', attempt: 'Segunda tentativa', title: 'Travessia do Rio Comandahy e retorno pela costa do Rio Uruguay', duration: '19 DIAS', bounds: [2590, 760, 3360, 1490], route: 1, discoveries: true },
   { kicker: 'Terceira tentativa', attempt: 'Terceira tentativa', title: 'Travessia do Rio Cebolaty e encontro dos grandes e valiosos Hervais', bounds: [2610, 480, 4090, 1490], route: 2, hervais: true },
   { kicker: 'Local de referência', title: 'Atual Munícipio de Porto Xavier - RS', bounds: [2460, 975, 2990, 1415], porto: true }
@@ -470,7 +471,9 @@ function placeExpeditionUnit(path, distance) {
   const point = path.getPointAtLength(at);
   const progress = length ? at / length : 0;
   const previousFacing = currentFacing;
-  if (path.id === 'route2') {
+  if (path.id === 'route1') {
+    currentFacing = progress < .53 ? 1 : -1;
+  } else if (path.id === 'route2') {
     currentFacing = progress < .345 ? 1 : progress < .79 ? -1 : 1;
   } else {
     currentFacing = 1;
@@ -499,6 +502,10 @@ function animateRouteAndUnit(route, duration) {
     const eased = routeProgress(progress);
     // Read the exact SVG geometry before changing its painted stroke.
     placeExpeditionUnit(route, length * eased);
+    if (route.id === 'route1') {
+      if (eased >= .27) firstAttemptMarkers[0].classList.add('is-visible');
+      if (eased >= .52) firstAttemptMarkers[1].classList.add('is-visible');
+    }
     route.style.strokeDashoffset = `${length * (1 - eased)}`;
     if (progress < 1) {
       unitAnimation = requestAnimationFrame(frame);
@@ -574,6 +581,7 @@ function render({ animateRoute = true } = {}) {
     route.style.strokeDashoffset = '';
   });
   arrivalMarkers.forEach((marker) => marker.classList.remove('is-visible'));
+  firstAttemptMarkers.forEach((marker) => marker.classList.remove('is-visible'));
 
   [...dots.children].forEach((dot, index) => dot.classList.toggle('active', index === active));
   if (stage.unit) {
@@ -600,6 +608,7 @@ function render({ animateRoute = true } = {}) {
     placeExpeditionUnit(route, length);
     expeditionUnit.classList.add('is-visible');
     arrivalMarkers[stage.route].classList.add('is-visible');
+    if (stage.route === 0) firstAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
     if (stage.discoveries) secondDiscoveries.classList.add('is-visible');
     if (stage.hervais) hervais.classList.add('is-visible');
   }

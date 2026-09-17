@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 60
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 61
+
+- A primeira tentativa agora parte do Cerro do Inhacurutum, marca os rios
+  Comandahy e Pindahy durante o percurso e retorna ao Cerro.
+- Os novos marcadores seguem a identidade visual das demais marcações e foram
+  ajustados para permanecer legíveis também em telas de celular.
 
 - As legendas dos dois mapas receberam o mesmo respiro inferior após a navegação ser movida para a lateral.
 - O acesso à tabela não invade mais os controles dos acontecimentos em telas estreitas.
