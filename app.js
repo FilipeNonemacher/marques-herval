@@ -261,6 +261,7 @@ function stopExpeditionAnimation() {
   clearTimeout(discoveryTimer);
   clearTimeout(hervaisTimer);
   expeditionUnit.classList.remove('is-moving');
+  (unitFacing.getAnimations?.() || []).forEach((animation) => animation.cancel());
 }
 
 // A short acceleration, a steady march and a short deceleration.
@@ -472,14 +473,26 @@ function placeExpeditionUnit(path, distance) {
   const progress = length ? at / length : 0;
   const previousFacing = currentFacing;
   if (path.id === 'route1') {
-    currentFacing = progress < .53 ? 1 : -1;
+    currentFacing = progress < .56 ? 1 : -1;
   } else if (path.id === 'route2') {
     currentFacing = progress < .345 ? 1 : progress < .79 ? -1 : 1;
   } else {
     currentFacing = 1;
   }
   expeditionUnit.setAttribute('transform', `translate(${point.x} ${point.y})`);
-  if (previousFacing !== currentFacing) unitFacing.setAttribute('transform', `scale(${currentFacing} 1)`);
+  if (previousFacing !== currentFacing) {
+    (unitFacing.getAnimations?.() || []).forEach((animation) => animation.cancel());
+    unitFacing.setAttribute('transform', `scale(${currentFacing} 1)`);
+    unitFacing.animate([
+      { opacity: 1 },
+      { opacity: .62, offset: .48 },
+      { opacity: .62, offset: .52 },
+      { opacity: 1 }
+    ], {
+      duration: 360,
+      easing: 'cubic-bezier(.4, 0, .2, 1)'
+    });
+  }
 }
 
 function animateRouteAndUnit(route, duration) {
@@ -494,6 +507,7 @@ function animateRouteAndUnit(route, duration) {
   expeditionUnit.classList.add('is-moving');
   expeditionUnit.classList.remove('is-departing');
   currentFacing = 1;
+  (unitFacing.getAnimations?.() || []).forEach((animation) => animation.cancel());
   unitFacing.setAttribute('transform', 'scale(1 1)');
   placeExpeditionUnit(route, 0);
 
@@ -503,8 +517,8 @@ function animateRouteAndUnit(route, duration) {
     // Read the exact SVG geometry before changing its painted stroke.
     placeExpeditionUnit(route, length * eased);
     if (route.id === 'route1') {
-      if (eased >= .27) firstAttemptMarkers[0].classList.add('is-visible');
-      if (eased >= .52) firstAttemptMarkers[1].classList.add('is-visible');
+      if (eased >= .30) firstAttemptMarkers[0].classList.add('is-visible');
+      if (eased >= .58) firstAttemptMarkers[1].classList.add('is-visible');
     }
     route.style.strokeDashoffset = `${length * (1 - eased)}`;
     if (progress < 1) {
