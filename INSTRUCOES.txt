@@ -38,7 +38,10 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 64
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 65
+
+- A mudança de direção no Rio Pindahy recebeu tangentes contínuas e uma curva
+  arredondada pelo lado de terra, sem ultrapassar a margem histórica do rio.
 
 - O trecho da margem do Rio Uruguay foi simplificado em curvas contínuas,
   mantidas no lado de terra para não cruzar o traço de água do mapa.
