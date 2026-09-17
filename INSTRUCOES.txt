@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 66
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 67
+
+- A dobra no Rio Pindahy agora possui continuidade de tangente na entrada e
+  na saída, formando um arco amplo e redondo sem ultrapassar a margem do rio.
+- O acabamento foi revisado em desktop e celular, preservando margens,
+  tipografia, espaçamento e enquadramento das marcações.
 
 - O contorno após a margem do Rio Uruguay agora segue a curva curta indicada
   na referência, sem avançar até a extremidade da enseada.
