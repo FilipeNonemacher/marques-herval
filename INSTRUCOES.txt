@@ -38,7 +38,13 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 62
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 63
+
+- Ao alcançar a margem do Rio Uruguay, a segunda tentativa segue continuamente
+  pela margem, sem retornar ao marcador e sem atravessar o curso d'água.
+- O pequeno herval e o laranjal voltaram a aparecer apenas com nome e imagem,
+  depois da passagem da expedição; ambos permanecem visíveis ao final.
+- Ao concluir o retorno ao Cerro, somente a imagem da tropa desaparece.
 
 - A segunda tentativa agora parte do Cerro do Inhacurutum, marca os rios
   Comandahy e Pindahy, alcança e contorna a margem do Rio Uruguay e retorna

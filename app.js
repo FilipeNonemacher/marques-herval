@@ -523,7 +523,7 @@ function animateRouteAndUnit(route, duration) {
       if (eased >= .14) secondAttemptMarkers[0].classList.add('is-visible');
       if (eased >= .35) secondAttemptMarkers[1].classList.add('is-visible');
       if (eased >= .57) secondAttemptMarkers[2].classList.add('is-visible');
-      if (eased >= .68) secondDiscoveries.classList.add('is-visible');
+      if (eased >= .74) secondDiscoveries.classList.add('is-visible');
     }
     route.style.strokeDashoffset = `${length * (1 - eased)}`;
     if (progress < 1) {
