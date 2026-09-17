@@ -38,7 +38,13 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 61
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 62
+
+- A segunda tentativa agora parte do Cerro do Inhacurutum, marca os rios
+  Comandahy e Pindahy, alcança e contorna a margem do Rio Uruguay e retorna
+  ao Cerro.
+- O pequeno herval está assinalado em verde e o laranjal em laranja, com as
+  ilustrações já existentes no projeto aparecendo durante o percurso.
 
 - A primeira tentativa agora parte do Cerro do Inhacurutum, marca os rios
   Comandahy e Pindahy durante o percurso e retorna ao Cerro.
