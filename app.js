@@ -78,7 +78,7 @@ const stages = [
   { kicker: 'Primeira tentativa', attempt: 'Primeira tentativa', title: 'Travessia do Rio Comandahy, chegada ao Rio Pindahy e retorno ao Cerro do Inhacurutum', duration: '7 DIAS', bounds: [2760, 980, 3370, 1515], route: 0 },
   { kicker: 'Segunda tentativa', attempt: 'Segunda tentativa', title: 'Rios Comandahy e Pindahy, margem do Rio Uruguay e retorno ao Cerro', duration: '19 DIAS', bounds: [2590, 900, 3300, 1470], route: 1, discoveries: true },
   { kicker: 'Terceira tentativa', attempt: 'Terceira tentativa', title: 'Travessia do Comandahy, Campos das Vaccas Brancas e retorno ao Cerro', bounds: [2760, 840, 3380, 1515], route: 2, vaccas: true },
-  { kicker: 'Quarta tentativa', attempt: 'Quarta tentativa', title: 'Rios Comandahy, Pindahy e Cebolaty, Grandes e Valiosos Hervais e retorno ao Cerro', bounds: [2880, 580, 4050, 1450], route: 3, hervais: true },
+  { kicker: 'Quarta tentativa', attempt: 'Quarta tentativa', title: 'Rios Comandahy, Pindahy e Cebolaty, Grandes e Valiosos Hervais e retorno ao Cerro', bounds: [2880, 580, 4050, 1450], route: 3, routeDuration: 15000, hervais: true },
   { kicker: 'Local de referência', title: 'Atual Munícipio de Porto Xavier - RS', bounds: [2460, 975, 2990, 1415], porto: true }
 ];
 const modernStages = [
@@ -644,7 +644,7 @@ function render({ animateRoute = true } = {}) {
   if (animateRoute && Number.isInteger(stage.route)) {
     const route = routeElements[stage.route];
     const length = routeLength(route);
-    const duration = Math.max(5200, Math.min(12500, 3400 + length * 2.8));
+    const duration = stage.routeDuration || Math.max(5200, Math.min(12500, 3400 + length * 2.8));
     routeAnimationTimer = setTimeout(() => animateRouteAndUnit(route, duration), 850);
   } else if (Number.isInteger(stage.route)) {
     const route = routeElements[stage.route];

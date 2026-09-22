@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 73
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 74
+
+- O marcador do Rio Cebolaty e a curva da quarta rota foram deslocados para
+  o centro do traço azul do curso d'água no mapa histórico.
+- A quarta tentativa recebeu uma duração de 15 segundos, aproximadamente
+  20% mais lenta, sem alterar o ritmo das três tentativas anteriores.
 
 - A quarta tentativa agora parte do Cerro do Inhacurutum, marca os rios
   Comandahy, Pindahy e Cebolaty e retorna ao Cerro por um percurso contínuo.
