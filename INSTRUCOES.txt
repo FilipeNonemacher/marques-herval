@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 69
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 70
+
+- O marcador dos Campos das Vaccas Brancas foi deslocado para o ponto indicado
+  e recebeu acabamento verde-escuro, harmonizado com o contorno da região.
+- Um grupo recortado de três bovinos brancos aparece abaixo desse marcador,
+  preservando a leitura da rota no computador e no celular.
 
 - O destaque verde dos Campos das Vaccas Brancas foi reposicionado para a área
   indicada na referência, mais abaixo e com proporções ajustadas ao contorno.
