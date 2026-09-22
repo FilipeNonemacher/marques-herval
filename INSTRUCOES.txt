@@ -38,7 +38,10 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 68
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 69
+
+- O destaque verde dos Campos das Vaccas Brancas foi reposicionado para a área
+  indicada na referência, mais abaixo e com proporções ajustadas ao contorno.
 
 - A terceira tentativa agora parte do Cerro do Inhacurutum, cruza o Rio
   Comandahy, encontra os Campos das Vaccas Brancas e retorna ao Cerro por uma
