@@ -38,7 +38,11 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 71
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 72
+
+- O marcador do Rio Comandahy foi removido da terceira tentativa.
+- O marcador dos Campos das Vaccas Brancas e o grupo de bovinos foram
+  centralizados no destaque, mantendo distância segura das linhas da rota.
 
 - Na terceira tentativa, o trajeto é concluído antes da revelação dos
   marcadores, do círculo e dos bovinos.
