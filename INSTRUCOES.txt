@@ -38,7 +38,12 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 70
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 71
+
+- Na terceira tentativa, o trajeto é concluído antes da revelação dos
+  marcadores, do círculo e dos bovinos.
+- O grupo de bovinos foi reduzido e deslocado para a direita, permanecendo
+  abaixo do marcador sem sobrepor as linhas da expedição.
 
 - O marcador dos Campos das Vaccas Brancas foi deslocado para o ponto indicado
   e recebeu acabamento verde-escuro, harmonizado com o contorno da região.

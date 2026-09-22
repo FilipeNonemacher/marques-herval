@@ -132,6 +132,7 @@ let inputLockedUntil = 0;
 let unitAnimation = 0;
 let routeAnimationTimer = 0;
 let unitExitTimer = 0;
+let thirdRevealTimer = 0;
 let manualTransitionTimer = 0;
 let modernManualTransitionTimer = 0;
 let currentFacing = 1;
@@ -260,6 +261,7 @@ function stopExpeditionAnimation() {
   cancelAnimationFrame(unitAnimation);
   clearTimeout(routeAnimationTimer);
   clearTimeout(unitExitTimer);
+  clearTimeout(thirdRevealTimer);
   expeditionUnit.classList.remove('is-moving');
   (unitFacing.getAnimations?.() || []).forEach((animation) => animation.cancel());
 }
@@ -537,12 +539,6 @@ function animateRouteAndUnit(route, duration) {
       if (eased >= .35) secondAttemptMarkers[1].classList.add('is-visible');
       if (eased >= .57) secondAttemptMarkers[2].classList.add('is-visible');
       if (eased >= .74) secondDiscoveries.classList.add('is-visible');
-    } else if (route.id === 'route3') {
-      if (eased >= .25) thirdAttemptMarkers[0].classList.add('is-visible');
-      if (eased >= .46) {
-        thirdAttemptMarkers[1].classList.add('is-visible');
-        vaccasFields.classList.add('is-visible');
-      }
     }
     route.style.strokeDashoffset = `${length * (1 - eased)}`;
     if (progress < 1) {
@@ -552,6 +548,13 @@ function animateRouteAndUnit(route, duration) {
       const routeIndex = routeElements.indexOf(route);
       if (routeIndex >= 0) arrivalMarkers[routeIndex].classList.add('is-visible');
       unitExitTimer = setTimeout(() => expeditionUnit.classList.add('is-departing'), 650);
+      if (route.id === 'route3') {
+        thirdRevealTimer = setTimeout(() => {
+          if (stages[active]?.route !== 2) return;
+          thirdAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
+          vaccasFields.classList.add('is-visible');
+        }, 420);
+      }
     }
   }
 
