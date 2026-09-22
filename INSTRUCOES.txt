@@ -38,7 +38,10 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 74
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 75
+
+- O círculo dos Grandes e Valiosos Hervais foi reduzido moderadamente para
+  preservar uma folga limpa em relação à linha da quarta expedição.
 
 - O marcador do Rio Cebolaty e a curva da quarta rota foram deslocados para
   o centro do traço azul do curso d'água no mapa histórico.
