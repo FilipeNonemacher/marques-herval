@@ -38,7 +38,14 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 72
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 73
+
+- A quarta tentativa agora parte do Cerro do Inhacurutum, marca os rios
+  Comandahy, Pindahy e Cebolaty e retorna ao Cerro por um percurso contínuo.
+- A região dos Grandes e Valiosos Hervais recebe um contorno verde próprio,
+  nome e ilustrações, revelados quando a expedição alcança a área superior.
+- O novo enquadramento preserva toda a rota e mantém marcadores, textos e
+  margens legíveis tanto no computador quanto no celular.
 
 - O marcador do Rio Comandahy foi removido da terceira tentativa.
 - O marcador dos Campos das Vaccas Brancas e o grupo de bovinos foram

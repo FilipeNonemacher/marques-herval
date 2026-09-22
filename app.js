@@ -48,13 +48,15 @@ const historyDetailTitle = $('#historyDetailTitle');
 const historyDetailText = $('#historyDetailText');
 const historyBack = $('#historyBack');
 const historyTopicButtons = [...document.querySelectorAll('[data-history-topic]')];
-const routeElements = [$('#route1'), $('#route2'), $('#route3')];
-const arrivalMarkers = [$('#arrivalMarker1'), $('#arrivalMarker2'), $('#arrivalMarker3')];
+const routeElements = [$('#route1'), $('#route2'), $('#route3'), $('#route4')];
+const arrivalMarkers = [$('#arrivalMarker1'), $('#arrivalMarker2'), $('#arrivalMarker3'), $('#arrivalMarker4')];
 const firstAttemptMarkers = [$('#firstComandahyMarker'), $('#firstPindahyMarker')];
 const secondAttemptMarkers = [$('#secondComandahyMarker'), $('#secondPindahyMarker'), $('#secondUruguayMarker')];
 const thirdAttemptMarkers = [$('#vaccasMarker')];
+const fourthAttemptMarkers = [$('#fourthComandahyMarker'), $('#fourthPindahyMarker'), $('#fourthCebolatyMarker')];
 const secondDiscoveries = $('#secondDiscoveries');
 const vaccasFields = $('#vaccasFields');
+const valuableHervais = $('#valuableHervais');
 const expeditionUnit = $('#expeditionUnit');
 const unitFacing = $('#unitFacing');
 const camera = $('#camera');
@@ -76,6 +78,7 @@ const stages = [
   { kicker: 'Primeira tentativa', attempt: 'Primeira tentativa', title: 'Travessia do Rio Comandahy, chegada ao Rio Pindahy e retorno ao Cerro do Inhacurutum', duration: '7 DIAS', bounds: [2760, 980, 3370, 1515], route: 0 },
   { kicker: 'Segunda tentativa', attempt: 'Segunda tentativa', title: 'Rios Comandahy e Pindahy, margem do Rio Uruguay e retorno ao Cerro', duration: '19 DIAS', bounds: [2590, 900, 3300, 1470], route: 1, discoveries: true },
   { kicker: 'Terceira tentativa', attempt: 'Terceira tentativa', title: 'Travessia do Comandahy, Campos das Vaccas Brancas e retorno ao Cerro', bounds: [2760, 840, 3380, 1515], route: 2, vaccas: true },
+  { kicker: 'Quarta tentativa', attempt: 'Quarta tentativa', title: 'Rios Comandahy, Pindahy e Cebolaty, Grandes e Valiosos Hervais e retorno ao Cerro', bounds: [2880, 580, 4050, 1450], route: 3, hervais: true },
   { kicker: 'Local de referência', title: 'Atual Munícipio de Porto Xavier - RS', bounds: [2460, 975, 2990, 1415], porto: true }
 ];
 const modernStages = [
@@ -480,6 +483,8 @@ function placeExpeditionUnit(path, distance) {
     currentFacing = progress < .35 ? 1 : progress < .74 ? -1 : 1;
   } else if (path.id === 'route3') {
     currentFacing = progress < .51 ? 1 : -1;
+  } else if (path.id === 'route4') {
+    currentFacing = progress < .54 ? 1 : -1;
   } else {
     currentFacing = 1;
   }
@@ -539,6 +544,11 @@ function animateRouteAndUnit(route, duration) {
       if (eased >= .35) secondAttemptMarkers[1].classList.add('is-visible');
       if (eased >= .57) secondAttemptMarkers[2].classList.add('is-visible');
       if (eased >= .74) secondDiscoveries.classList.add('is-visible');
+    } else if (route.id === 'route4') {
+      if (eased >= .08) fourthAttemptMarkers[0].classList.add('is-visible');
+      if (eased >= .19) fourthAttemptMarkers[1].classList.add('is-visible');
+      if (eased >= .49) valuableHervais.classList.add('is-visible');
+      if (eased >= .54) fourthAttemptMarkers[2].classList.add('is-visible');
     }
     route.style.strokeDashoffset = `${length * (1 - eased)}`;
     if (progress < 1) {
@@ -607,6 +617,7 @@ function render({ animateRoute = true } = {}) {
   $('#cerroIllustration').classList.toggle('is-visible', Boolean(stage.cerro));
   modernMapButton.classList.toggle('is-visible', active === stages.length - 1);
   vaccasFields.classList.remove('is-visible');
+  valuableHervais.classList.remove('is-visible');
   secondDiscoveries.classList.remove('is-visible');
   stopExpeditionAnimation();
   expeditionUnit.classList.remove('is-visible');
@@ -623,6 +634,7 @@ function render({ animateRoute = true } = {}) {
   firstAttemptMarkers.forEach((marker) => marker.classList.remove('is-visible'));
   secondAttemptMarkers.forEach((marker) => marker.classList.remove('is-visible'));
   thirdAttemptMarkers.forEach((marker) => marker.classList.remove('is-visible'));
+  fourthAttemptMarkers.forEach((marker) => marker.classList.remove('is-visible'));
 
   [...dots.children].forEach((dot, index) => dot.classList.toggle('active', index === active));
   if (stage.unit) {
@@ -646,8 +658,10 @@ function render({ animateRoute = true } = {}) {
     if (stage.route === 0) firstAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
     if (stage.route === 1) secondAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
     if (stage.route === 2) thirdAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
+    if (stage.route === 3) fourthAttemptMarkers.forEach((marker) => marker.classList.add('is-visible'));
     if (stage.discoveries) secondDiscoveries.classList.add('is-visible');
     if (stage.vaccas) vaccasFields.classList.add('is-visible');
+    if (stage.hervais) valuableHervais.classList.add('is-visible');
   }
 }
 
