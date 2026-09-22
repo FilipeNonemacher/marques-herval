@@ -38,7 +38,13 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 67
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 68
+
+- A terceira tentativa agora parte do Cerro do Inhacurutum, cruza o Rio
+  Comandahy, encontra os Campos das Vaccas Brancas e retorna ao Cerro por uma
+  curva suave e próxima ao trajeto de ida.
+- Somente os Campos das Vaccas Brancas recebem o destaque circular verde nesta
+  etapa, com marcadores próprios para o rio e para a descoberta.
 
 - A dobra no Rio Pindahy agora possui continuidade de tangente na entrada e
   na saída, formando um arco amplo e redondo sem ultrapassar a margem do rio.
