@@ -38,7 +38,15 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 76
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 77
+
+- A ampulheta da transição voltou a uma linguagem minimalista: estrutura fina,
+  vidro discreto, areia animada e sombras suaves, sem moldura ornamental.
+- O mapa atual recebeu um novo nível vetorial de 32000 x 32000 pixels em blocos
+  WebP sem perda. Esse nível entra somente nas aproximações que ultrapassam a
+  definição de 16K, deixando o zoom máximo mais limpo sem pesar o panorama.
+- Em telas móveis, a seleção mantém 8K no panorama, 16K nas aproximações comuns
+  e reserva 32K para o zoom alto, limitando memória sem sacrificar nitidez.
 
 - A transição para o mapa atual agora reutiliza a mesma imagem da abertura e
   recebeu uma ampulheta vetorial mais detalhada, iluminação em camadas e
@@ -166,8 +174,8 @@ map-assets.js e map-renderer.js são necessários para exibir e ampliar os mapas
 
 MAPA ATUAL
 O segundo mapa utiliza mapa-atual-br-ers.png (8000 x 8000 pixels) como base limpa
-e um nível de detalhe adicional de 16000 x 16000 pixels, renderizado da fonte
-vetorial sem reintroduzir os nomes e Lajeados removidos anteriormente.
+e níveis adicionais de 16000 x 16000 e 32000 x 32000 pixels, renderizados da
+fonte vetorial sem reintroduzir os nomes e Lajeados removidos anteriormente.
 Uma cópia do PDF original está em public/assets/mapa-atual-br-ers-fonte.pdf.
 As marcações seguem a referência enviada pelo usuário: Porto Xavier, Porto Lucena,
 Porto Vera Cruz e Cerro do Inhacurutum em marrom; rios Comandaí, Amandaú

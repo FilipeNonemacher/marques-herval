@@ -9,10 +9,10 @@
   <link rel="preload" as="image" href="public/assets/map-cover.webp" />
   <link rel="preload" as="font" type="font/woff2" href="public/assets/montserrat-latin.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="public/assets/cinzel-latin.woff2" crossorigin />
-  <script src="map-assets.js?revisao=76"></script>
+  <script src="map-assets.js?revisao=77"></script>
   <script>document.documentElement.style.setProperty('--cover-preview', `url("${MAP_ASSETS.cover.tiny}")`);</script>
-  <link rel="stylesheet" href="styles.css?revisao=76" />
-  <link rel="stylesheet" href="design.css?revisao=76" />
+  <link rel="stylesheet" href="styles.css?revisao=77" />
+  <link rel="stylesheet" href="design.css?revisao=77" />
 </head>
 <body>
   <main id="experience">
@@ -481,26 +481,19 @@
           <svg class="transition-hourglass" viewBox="0 0 24 28">
             <defs>
               <linearGradient id="hourglassBrass" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#fff0c8"/><stop offset=".22" stop-color="#d7b273"/><stop offset=".55" stop-color="#8c6738"/><stop offset=".78" stop-color="#d9b878"/><stop offset="1" stop-color="#f5dda9"/>
-              </linearGradient>
-              <linearGradient id="hourglassWood" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#d3aa6b"/><stop offset=".46" stop-color="#76502b"/><stop offset=".72" stop-color="#a87a43"/><stop offset="1" stop-color="#4e321e"/>
+                <stop offset="0" stop-color="#f1dfb5"/><stop offset=".5" stop-color="#b68e54"/><stop offset="1" stop-color="#e8ca8e"/>
               </linearGradient>
               <linearGradient id="hourglassGlass" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#f7ffff" stop-opacity=".32"/><stop offset=".45" stop-color="#cce4e7" stop-opacity=".045"/><stop offset="1" stop-color="#fff4d5" stop-opacity=".18"/>
+                <stop offset="0" stop-color="#edf8f7" stop-opacity=".16"/><stop offset=".55" stop-color="#d9e8e7" stop-opacity=".025"/><stop offset="1" stop-color="#fff4d5" stop-opacity=".1"/>
               </linearGradient>
               <linearGradient id="hourglassSand" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#ffe7ab"/><stop offset=".45" stop-color="#e2bd73"/><stop offset="1" stop-color="#9a6d35"/>
+                <stop offset="0" stop-color="#efd092"/><stop offset="1" stop-color="#a77c43"/>
               </linearGradient>
               <clipPath id="hourglassUpperClip" clipPathUnits="userSpaceOnUse"><rect class="hourglass-upper-mask" x="6" y="5" width="12" height="8"/></clipPath>
               <clipPath id="hourglassLowerClip" clipPathUnits="userSpaceOnUse"><path d="M7.7 21.3V17.828q0-.53.38-.92L12 12.99l3.92 3.92q.38.39.38.92V21.3Z"/></clipPath>
             </defs>
-            <ellipse class="hourglass-floor-shadow" cx="12" cy="26.4" rx="7.4" ry=".85"/>
             <g transform="translate(0 2)">
-              <path class="hourglass-post post-left" d="M5.35 3.2C4.65 7.2 4.65 16.8 5.35 20.8"/>
-              <path class="hourglass-post post-right" d="M18.65 3.2c.7 4 .7 13.6 0 17.6"/>
               <path class="hourglass-glass" d="M7 2h10v4.172a2 2 0 0 1-.586 1.414L12 12l4.414 4.414A2 2 0 0 1 17 17.828V22H7v-4.172a2 2 0 0 1 .586-1.414L12 12 7.586 7.586A2 2 0 0 1 7 6.172Z"/>
-              <path class="hourglass-glass-shine" d="M8.25 3.5v2.6c0 .72.25 1.2.74 1.69l2.14 2.14M8.35 18.28c0-.55.19-.94.58-1.34l1.64-1.64"/>
               <path class="hourglass-sand" clip-path="url(#hourglassUpperClip)" d="M7.7 5.2h8.6v.97q0 .53-.38.92L12 11.01 8.08 7.09q-.38-.39-.38-.92Z"/>
               <g class="hourglass-flow">
                 <path class="hourglass-stream" d="M12 11.1v10.2"/>
@@ -508,13 +501,8 @@
               </g>
               <g clip-path="url(#hourglassLowerClip)"><path class="hourglass-sand hourglass-lower-sand" d="M6.8 21.3h10.4v-.6c-1.1-1.45-2.8-5.7-5.2-6.7-2.4 1-4.1 5.25-5.2 6.7Z"/></g>
               <g class="hourglass-outline">
+                <path d="M5 2h14M5 22h14"/>
                 <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
-              </g>
-              <g class="hourglass-frame">
-                <path class="hourglass-cap cap-top" d="M4.1 1.25Q4.1.35 5 .35h14q.9 0 .9.9v1.5q0 .9-.9.9H5q-.9 0-.9-.9Z"/>
-                <path class="hourglass-cap cap-bottom" d="M4.1 21.25q0-.9.9-.9h14q.9 0 .9.9v1.5q0 .9-.9.9H5q-.9 0-.9-.9Z"/>
-                <path class="hourglass-cap-highlight" d="M5.2 1h13.6M5.2 21h13.6"/>
-                <circle cx="5.5" cy="2" r=".34"/><circle cx="18.5" cy="2" r=".34"/><circle cx="5.5" cy="22" r=".34"/><circle cx="18.5" cy="22" r=".34"/>
               </g>
             </g>
           </svg>
@@ -525,7 +513,7 @@
       </div>
     </div>
   </main>
-  <script src="map-renderer.js?revisao=76"></script>
-  <script src="app.js?revisao=76"></script>
+  <script src="map-renderer.js?revisao=77"></script>
+  <script src="app.js?revisao=77"></script>
 </body>
 </html>

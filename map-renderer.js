@@ -1,5 +1,5 @@
 /* Viewport-sized atlas renderer. High-density tiles preserve line work without
-   asking a phone to decode or composite the complete 8K/16K map. */
+   asking a phone to decode or composite the complete 8K/16K/32K map. */
 class TiledMap {
   constructor(surface, definition) {
     this.surface = surface;
@@ -72,7 +72,7 @@ class TiledMap {
     const density = view.zoom * Math.min(devicePixelRatio || 1, 2);
     // A small quality reserve keeps thin river and road labels crisp before a
     // zoom gesture begins, while the tile grid still bounds memory on phones.
-    const qualityReserve = matchMedia('(pointer: coarse)').matches ? 1.12 : 1.2;
+    const qualityReserve = matchMedia('(pointer: coarse)').matches ? 1.08 : 1.2;
     const level = levels.find(item => item.scale >= density * qualityReserve) || levels[levels.length - 1];
     this.level = level;
     const step = tileSize / level.scale;
