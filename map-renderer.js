@@ -1,5 +1,5 @@
-/* Viewport-sized atlas renderer. At full resolution, tiles contain the original
-   pixels; a phone never has to decode or composite an entire 8K map. */
+/* Viewport-sized atlas renderer. High-density tiles preserve line work without
+   asking a phone to decode or composite the complete 8K/16K map. */
 class TiledMap {
   constructor(surface, definition) {
     this.surface = surface;
@@ -70,7 +70,10 @@ class TiledMap {
     // Request only detail useful at this scale. Full-resolution tiles are used
     // as the user approaches; a wide overview starts with the smaller levels.
     const density = view.zoom * Math.min(devicePixelRatio || 1, 2);
-    const level = levels.find(item => item.scale >= density * .95) || levels[levels.length - 1];
+    // A small quality reserve keeps thin river and road labels crisp before a
+    // zoom gesture begins, while the tile grid still bounds memory on phones.
+    const qualityReserve = matchMedia('(pointer: coarse)').matches ? 1.12 : 1.2;
+    const level = levels.find(item => item.scale >= density * qualityReserve) || levels[levels.length - 1];
     this.level = level;
     const step = tileSize / level.scale;
     const minX = Math.max(0, Math.floor(-left / (step * view.zoom)));

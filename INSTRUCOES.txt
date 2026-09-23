@@ -38,7 +38,19 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 75
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 76
+
+- A transição para o mapa atual agora reutiliza a mesma imagem da abertura e
+  recebeu uma ampulheta vetorial mais detalhada, iluminação em camadas e
+  movimentos contínuos feitos apenas com transformações leves.
+- O mapa atual ganhou um nível adicional de 16000 x 16000 pixels, extraído da
+  fonte vetorial e combinado com as áreas já limpas. Os nomes de cidades menores
+  e os Lajeados continuam removidos, inclusive durante o zoom máximo.
+- A seleção de blocos mantém uma pequena reserva de definição na visão inicial;
+  no celular, a densidade continua limitada e somente os blocos visíveis são
+  carregados para preservar memória e fluidez.
+- Marcadores, rios e legendas do mapa atual foram refinados como vetores, com
+  contornos mais limpos, contraste mais preciso e animações menos bruscas.
 
 - O círculo dos Grandes e Valiosos Hervais foi reduzido moderadamente para
   preservar uma folga limpa em relação à linha da quarta expedição.
@@ -153,8 +165,9 @@ Ao publicar, envie também public/assets/map-tiles com todas as subpastas. Os ar
 map-assets.js e map-renderer.js são necessários para exibir e ampliar os mapas.
 
 MAPA ATUAL
-O segundo mapa utiliza mapa-atual-br-ers.png (8000 x 8000 pixels), renderizado
-do PDF fornecido Rio_Grande_do_Sul_BR_ERS_com_fundo.pdf, sem alterar seu conteúdo.
+O segundo mapa utiliza mapa-atual-br-ers.png (8000 x 8000 pixels) como base limpa
+e um nível de detalhe adicional de 16000 x 16000 pixels, renderizado da fonte
+vetorial sem reintroduzir os nomes e Lajeados removidos anteriormente.
 Uma cópia do PDF original está em public/assets/mapa-atual-br-ers-fonte.pdf.
 As marcações seguem a referência enviada pelo usuário: Porto Xavier, Porto Lucena,
 Porto Vera Cruz e Cerro do Inhacurutum em marrom; rios Comandaí, Amandaú

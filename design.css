@@ -248,22 +248,27 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
 .modern-title-card h3 { font: 500 clamp(15px, 1.5vw, 23px)/1.4 var(--ui-font); letter-spacing: .04em; }
 .attempt-detail::before { content: ' — '; }
 .modern-world { width: 8000px; height: 8000px; }
+.modern-map-canvas {
+  filter: none;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
 .modern-scene:focus { outline: none; }
-.modern-scene.is-annotated .modern-landmark { --landmark: #644b30; }
-.modern-scene.is-annotated .modern-marker-halo { r: 15px; fill-opacity: .1; stroke-opacity: .28; stroke-width: 1; }
-.modern-scene.is-annotated .modern-marker-ring { r: 8px; fill: #f0e4c9b0; stroke-width: 2; }
-.modern-scene.is-annotated .modern-marker-core { r: 3px; fill: #644b30; stroke: #f4e8cf; stroke-width: 1; }
-.modern-scene.is-annotated .modern-landmark > path { stroke: #644b30; stroke-width: 1.2; }
+.modern-scene.is-annotated .modern-landmark { --landmark: #5b4128; }
+.modern-scene.is-annotated .modern-marker-halo { r: 18px; fill-opacity: .1; stroke-opacity: .24; stroke-width: 1.15; }
+.modern-scene.is-annotated .modern-marker-ring { r: 9.5px; fill: #f7edd5dc; stroke-width: 2.15; }
+.modern-scene.is-annotated .modern-marker-core { r: 3.4px; fill: #5b4128; stroke: #fff4dc; stroke-width: 1.1; }
+.modern-scene.is-annotated .modern-landmark > path { stroke: #5b4128; stroke-width: 1.35; }
 .modern-scene.is-annotated .modern-landmark text,
 .modern-scene.is-annotated .modern-river-group text {
-  font: 600 19px/1.25 Cinzel, Georgia, serif; letter-spacing: .025em;
-  fill: #49351f; stroke: #f2efe4; stroke-width: 4px; paint-order: stroke fill; stroke-linejoin: round;
+  font: 600 19px/1.25 Cinzel, Georgia, serif; letter-spacing: .035em;
+  fill: #402d1b; stroke: #f7f4e9; stroke-width: 4.4px; paint-order: stroke fill; stroke-linejoin: round;
 }
 .modern-scene.is-annotated .river-historic-name { font-size: 15px; }
 .modern-scene.is-annotated .modern-river-path {
-  stroke: #075fbd; stroke-width: 3.5px; stroke-dasharray: 13 9;
+  stroke: #075ba9; stroke-width: 3.8px; stroke-dasharray: 14 8;
   stroke-linecap: round; stroke-linejoin: round;
-  filter: drop-shadow(0 0 1.2px #f4fbff) drop-shadow(0 2px 1.4px #07365378);
+  filter: drop-shadow(0 1px .7px #f7fcff) drop-shadow(0 1.4px .8px #07365373);
 }
 .modern-scene.is-annotated .modern-river-group {
   opacity: 0; filter: blur(2px); transform: translateY(5px);
@@ -278,17 +283,17 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   opacity: 0; animation: modernRiverFlowArrive .86s 2.3s var(--ease-out) forwards;
 }
 .modern-scene.is-annotated .modern-river-group.is-visible:not(.is-drawing) .modern-river-flow {
-  animation: modernRiverFlow 1.55s linear infinite;
+  animation: modernRiverFlow 1.9s linear infinite;
 }
 .modern-scene.is-annotated .river-endpoint-halo {
-  fill: #14659418; stroke: #14659459; stroke-width: 1;
+  fill: #075ba919; stroke: #075ba955; stroke-width: 1.15;
 }
 .modern-scene.is-annotated .river-endpoint-ring {
-  fill: #f1eee2d9; stroke: #146594; stroke-width: 2;
+  fill: #f8f4e8e8; stroke: #075ba9; stroke-width: 2.15;
 }
-.modern-scene.is-annotated .river-endpoint-core { fill: #146594; stroke: #f7f2e5; stroke-width: 1; }
+.modern-scene.is-annotated .river-endpoint-core { fill: #075ba9; stroke: #fff8e8; stroke-width: 1.1; }
 .modern-scene.is-annotated .river-endpoint-leader {
-  fill: none; stroke: #146594; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round;
+  fill: none; stroke: #075ba9; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
 }
 .modern-scene.is-annotated .river-endpoint { opacity: 1; }
 .modern-scene.is-annotated .modern-river-group.is-drawing .river-endpoint {
@@ -342,41 +347,72 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   --reveal-duration: 1300ms;
   isolation: isolate;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #1d2729, #0b1217 65%, #080d12);
+  background: radial-gradient(ellipse at 50% 43%, #2a302c, #10181b 61%, #070d12);
   transition: opacity .7s var(--ease-out), visibility 0s .7s;
 }
 .transition-atlas {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; pointer-events: none;
   object-fit: cover; object-position: center;
+  image-rendering: auto;
+  transform: translate3d(0, 0, 0) scale(1.025);
 }
 .map-transition::before {
   z-index: 1; pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 46%, #071017ad 0%, #07101740 20%, transparent 49%),
-    linear-gradient(180deg, #07101440, transparent 30%, #050b138c),
-    linear-gradient(100deg, #111b1d85, #08121b80);
-  box-shadow: inset 0 0 150px #040a0f70;
+    radial-gradient(ellipse at 50% 46%, #071017b8 0%, #0710174d 21%, transparent 52%),
+    linear-gradient(180deg, #0710144f, transparent 29%, transparent 67%, #050b13a6),
+    linear-gradient(100deg, #111b1d80, #08121b70);
+  box-shadow: inset 0 0 180px #03080e8c;
+}
+.map-transition::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  opacity: .08;
+  background-image: radial-gradient(circle, #fff4d8 0 .6px, transparent .7px);
+  background-size: 5px 5px;
 }
 .map-transition:focus { outline: none; }
 .map-transition.is-active { animation: transitionVeilEnter .7s var(--ease-out) both; visibility: visible; opacity: 1; pointer-events: auto; transition-delay: 0s; }
 .map-transition.is-active.is-revealing { animation: windVeilDepart var(--reveal-duration) linear both; transition: none; }
-.map-transition.is-active .transition-atlas { animation: none; will-change: transform; }
+.map-transition.is-active .transition-atlas { animation: transitionAtlasHold 5s cubic-bezier(.2, .55, .3, 1) both; will-change: transform; }
 /* The breeze moves only this lightweight picture and a soft, abstract light band. */
 .map-transition.is-active.is-revealing .transition-atlas { animation: windAtlasDepart var(--reveal-duration) cubic-bezier(.22, .65, .3, 1) both; }
 .transition-wind {
   position: absolute; inset: -15% -35%; z-index: 3; pointer-events: none;
   opacity: 0; transform: translate3d(-65%, 0, 0);
-  background: linear-gradient(104deg, transparent 35%, #f1dfb80a 43%, #f1dfb83d 49%, #f7eac71c 53%, transparent 62%);
+  background: linear-gradient(104deg, transparent 34%, #f1dfb808 42%, #f1dfb842 48%, #f7eac724 53%, transparent 63%);
 }
+.transition-wind::before, .transition-wind::after { content: ""; position: absolute; inset: 0; }
+.transition-wind::before { transform: translateX(-12%); background: linear-gradient(104deg, transparent 43%, #fff0c326 49%, transparent 55%); }
+.transition-wind::after { transform: translateX(16%); background: linear-gradient(104deg, transparent 47%, #dce9e31c 51%, transparent 57%); }
 .map-transition.is-active .transition-wind { will-change: transform, opacity; }
 .map-transition.is-active.is-revealing .transition-wind { animation: windLightPass var(--reveal-duration) cubic-bezier(.25, .55, .35, 1) both; }
-.transition-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0; padding: 32px; contain: layout paint; will-change: transform, opacity; text-shadow: 0 2px 16px #03080dee; }
+.transition-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0; padding: max(32px, env(safe-area-inset-top)) 32px max(32px, env(safe-area-inset-bottom)); contain: layout paint; will-change: transform, opacity; text-shadow: 0 2px 16px #03080dee; }
 .map-transition.is-active .transition-content { animation: atlasRise .7s .12s var(--ease-out) both; }
 .map-transition.is-active.is-revealing .transition-content { animation: windContentDepart .65s ease-in both; }
-.transition-hourglass { width: clamp(130px, 11vw, 172px); height: auto; display: block; overflow: visible; filter: drop-shadow(0 3px 10px #03090de6) drop-shadow(0 0 24px #d0ac5d30); }
-.hourglass-glass { fill: #c7dada05; }
+.hourglass-stage {
+  position: relative; width: clamp(142px, 12vw, 188px); isolation: isolate;
+  filter: drop-shadow(0 12px 18px #02070bd9) drop-shadow(0 0 30px #d0ac5d2b);
+}
+.hourglass-stage::before {
+  content: ""; position: absolute; z-index: -1; left: 50%; top: 49%; width: 86%; aspect-ratio: 1;
+  border: 1px solid #e1c58c24; border-radius: 50%; transform: translate(-50%, -50%) rotate(-12deg) scaleY(.6);
+  box-shadow: 0 0 42px #d9b56a14, inset 0 0 24px #f4d99f0d;
+}
+.hourglass-stage::after {
+  content: ""; position: absolute; z-index: -1; left: 50%; top: 49%; width: 108%; height: 1px;
+  background: linear-gradient(90deg, transparent, #ead19e38, transparent); transform: translate(-50%, -50%) rotate(-12deg);
+}
+.map-transition.is-active .hourglass-stage { animation: hourglassFloat 3.4s .8s ease-in-out infinite; }
+.transition-hourglass { width: 100%; height: auto; display: block; overflow: visible; }
+.hourglass-floor-shadow { fill: #0206098f; }
+.hourglass-glass { fill: url(#hourglassGlass); }
+.hourglass-glass-shine { fill: none; stroke: #f7ffff80; stroke-width: .25; stroke-linecap: round; }
 .hourglass-outline { fill: none; stroke: url(#hourglassBrass); stroke-width: .48; stroke-linecap: round; stroke-linejoin: round; }
+.hourglass-post { fill: none; stroke: url(#hourglassBrass); stroke-width: .58; stroke-linecap: round; }
+.hourglass-cap { fill: url(#hourglassWood); stroke: url(#hourglassBrass); stroke-width: .34; }
+.hourglass-cap-highlight { fill: none; stroke: #fff0c685; stroke-width: .18; stroke-linecap: round; }
+.hourglass-frame circle { fill: #f0d59a; stroke: #644522; stroke-width: .14; }
 .hourglass-sand { fill: url(#hourglassSand); }
 .hourglass-upper-mask { transform: translateY(0); }
 .hourglass-lower-sand { transform: scaleY(0); transform-box: view-box; transform-origin: 12px 21.3px; }
@@ -390,10 +426,10 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
 .map-transition.is-active .hourglass-grain { animation: sandGrainFall .72s linear infinite; }
 .map-transition.is-active .grain-two { animation-delay: -.24s; }
 .map-transition.is-active .grain-three { animation-delay: -.48s; }
-.transition-caption { margin: 22px 0 0; font: 500 clamp(11px, 1vw, 14px)/1.5 var(--accent-font); letter-spacing: .18em; text-transform: uppercase; color: #e3c68d; text-align: center; }
+.transition-caption { margin: 23px 0 0; font: 500 clamp(11px, 1vw, 14px)/1.5 var(--accent-font); letter-spacing: .19em; text-transform: uppercase; color: #efd39c; text-align: center; }
 .transition-seconds { margin-top: 13px; font: 400 22px/1.2 var(--accent-font); font-variant-numeric: lining-nums tabular-nums; color: #eee2cc; }
-.transition-track { width: 156px; height: 1px; margin-top: 20px; background: #d1af7229; overflow: hidden; }
-.transition-progress { width: 100%; height: 100%; background: #d1af72; transform-origin: left; transform: scaleX(0); }
+.transition-track { width: 184px; height: 2px; margin-top: 20px; border-radius: 999px; background: #d1af7226; overflow: hidden; box-shadow: inset 0 0 0 1px #fff5dc08; }
+.transition-progress { width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #9d743e, #f1d69e 70%, #fff0c8); box-shadow: 0 0 10px #e5c17b70; transform-origin: left; transform: scaleX(0); }
 .map-transition.is-active .transition-progress { animation: transitionProgress 5s linear both; }
 /* The screen-sized veil does the fade; never filter/animate the 8000px map. */
 .modern-scene.is-entering .modern-map-canvas { animation: none; filter: none; }
@@ -404,8 +440,10 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
 @keyframes sandGrainFall { from { transform: translateY(0); opacity: .8; } to { transform: translateY(9px); opacity: .35; } }
 @keyframes transitionProgress { to { transform: scaleX(1); } }
 @keyframes transitionVeilEnter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes transitionAtlasHold { from { transform: translate3d(0, 0, 0) scale(1.025); } to { transform: translate3d(-.45%, -.25%, 0) scale(1.045); } }
+@keyframes hourglassFloat { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -4px, 0); } }
 @keyframes windVeilDepart { 0%, 12% { opacity: 1; } 42% { opacity: .84; } 76% { opacity: .23; } 100% { opacity: 0; } }
-@keyframes windAtlasDepart { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(2.5%, -.6%, 0) scale(1.06); } }
+@keyframes windAtlasDepart { from { transform: translate3d(-.45%, -.25%, 0) scale(1.045); } to { transform: translate3d(2.5%, -.7%, 0) scale(1.095); } }
 @keyframes windLightPass { 0% { opacity: 0; transform: translate3d(-65%, 0, 0); } 22% { opacity: .9; } 65% { opacity: .65; } 100% { opacity: 0; transform: translate3d(65%, 0, 0); } }
 @keyframes windContentDepart { from { opacity: 1; transform: translate3d(0, 0, 0); } to { opacity: 0; transform: translate3d(28px, -8px, 0); } }
 
@@ -633,7 +671,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .modern-timeline #modernDots i.active { width: 5px; height: 22px; }
   .instruction { display: none; }
   .transition-caption { font-size: 13px; letter-spacing: .12em; }
-  .transition-hourglass { width: clamp(120px, 29vw, 154px); }
+  .hourglass-stage { width: clamp(126px, 31vw, 162px); }
   .cost-page, .history-menu-panel, .history-detail-panel { scrollbar-width: none; }
   .cost-page::-webkit-scrollbar, .history-menu-panel::-webkit-scrollbar, .history-detail-panel::-webkit-scrollbar { display: none; }
   .cost-page { touch-action: pan-y; padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right)); }
@@ -677,7 +715,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .validation-rule { margin: 18px auto; }
   .validation-content .validation-year { margin-top: 12px; }
   .validation-content .continue-cue { margin-top: 18px; }
-  .transition-hourglass { width: 100px; }
+  .hourglass-stage { width: 108px; }
   .transition-caption { margin-top: 10px; }
   .transition-seconds { margin-top: 8px; font-size: 18px; }
   .transition-track { margin-top: 12px; }

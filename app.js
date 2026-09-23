@@ -232,10 +232,10 @@ function warmTransitionArtwork() {
   if (transitionArtworkWarmed || typeof Image === 'undefined') return;
   transitionArtworkWarmed = true;
   // Only the lightweight transition artwork is prepared here. Decoding the
-  // second 8K map beside the historical map exhausted mobile GPU memory.
+  // current high-detail map beside the historical map exhausted mobile GPU memory.
   const image = new Image();
   image.decoding = 'async';
-  image.src = 'public/assets/transicao-mapas.jpg';
+  image.src = 'public/assets/map-cover.webp';
   $('.transition-atlas').src = image.src;
   if (image.decode) image.decode().catch(() => {});
 }
