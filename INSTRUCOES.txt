@@ -185,12 +185,13 @@ O segundo mapa utiliza mapa-atual-br-ers.png (8000 x 8000 pixels) como base limp
 e níveis adicionais de 16000 x 16000 e 32000 x 32000 pixels, renderizados da
 fonte vetorial sem reintroduzir os nomes e Lajeados removidos anteriormente.
 Uma cópia do PDF original está em public/assets/mapa-atual-br-ers-fonte.pdf.
-As marcações seguem a referência enviada pelo usuário: Porto Xavier, Porto Lucena,
-Porto Vera Cruz e Cerro do Inhacurutum em marrom; rios Comandaí, Amandaú
-(Antigo Rio Pindaí) e Cebolaty em azul. Os nomes usam o mesmo tom marrom.
+As marcações seguem as referências enviadas pelo usuário: Porto Xavier, Porto Lucena,
+Porto Vera Cruz, Porto Mauá e Cerro do Inhacurutum em marrom. Os rios Comandaí,
+Amandaú (Antigo Rio Pindaí) e Santo Cristo são marcados em azul; o Santo Cristo
+também é identificado pelo nome histórico Rio Cebolaty. Os nomes usam o mesmo tom marrom.
 O mapa atual abre com uma visão regional mais afastada e sem marcações. As setas
-revelam progressivamente os sete locais/cursos; cada rio é desenhado sobre seu
-curso quando sua etapa é alcançada. Ao final do desenho, surge um ponto azul com
+revelam progressivamente os oito locais/cursos; cada rio é desenhado sobre seu
+curso quando sua etapa é alcançada. Ao final do desenho, surge um ponto na cor do rio com
 linha-guia e nome acima. Depois, o curso permanece em azul forte, tracejado e com
 movimento discreto, mantendo as marcações anteriores visíveis.
 As aproximações seguintes são moderadas para preservar a leitura da região.

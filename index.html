@@ -9,10 +9,10 @@
   <link rel="preload" as="image" href="public/assets/map-cover.webp" />
   <link rel="preload" as="font" type="font/woff2" href="public/assets/montserrat-latin.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="public/assets/cinzel-latin.woff2" crossorigin />
-  <script src="map-assets.js?revisao=78"></script>
+  <script src="map-assets.js?revisao=79"></script>
   <script>document.documentElement.style.setProperty('--cover-preview', `url("${MAP_ASSETS.cover.tiny}")`);</script>
   <link rel="stylesheet" href="styles.css?revisao=78" />
-  <link rel="stylesheet" href="design.css?revisao=78" />
+  <link rel="stylesheet" href="design.css?revisao=79" />
 </head>
 <body>
   <main id="experience">
@@ -398,13 +398,13 @@
             <text x="30" y="-27"><tspan x="30">Rio Amandaú</tspan><tspan class="river-historic-name" x="30" dy="21">(Antigo Rio Pindaí)</tspan></text>
           </g>
         </g>
-        <g id="modernBugre" class="modern-river-group">
-          <path class="modern-river-path modern-river-flow river-bugre" d="M505 269 C512 265 515 252 522 255 C527 257 515 268 527 267 C535 269 540 268 545 262 C551 254 548 269 553 267 C561 268 553 274 565 273 C574 271 579 277 578 285 C578 291 588 289 584 296 C577 302 595 302 599 308 C599 316 606 316 610 322 C615 328 617 318 622 322 C621 336 630 328 637 329 C646 328 652 333 655 340 C667 339 653 344 668 350" />
-          <path id="modernBugrePath" class="modern-river-path modern-river-trace river-bugre" d="M505 269 C512 265 515 252 522 255 C527 257 515 268 527 267 C535 269 540 268 545 262 C551 254 548 269 553 267 C561 268 553 274 565 273 C574 271 579 277 578 285 C578 291 588 289 584 296 C577 302 595 302 599 308 C599 316 606 316 610 322 C615 328 617 318 622 322 C621 336 630 328 637 329 C646 328 652 333 655 340 C667 339 653 344 668 350" />
-          <g id="modernCebolatyEnd" class="river-endpoint" transform="translate(668 350)">
+        <g id="modernSantoCristo" class="modern-river-group">
+          <path class="modern-river-path modern-river-flow" d="M693.9 87 C689.9 91 684.7 92.8 681.2 97.4 C676.6 102.6 677.8 106 685.3 107.7 C693.3 109.5 688.7 115.8 690.4 119.3 C692.8 123.3 697.4 120.4 702 118.1 C707.7 115.8 715.2 118.7 719.8 120.4 C724.4 122.7 722.1 126.8 719.8 130.2 C716.4 136 710 140.6 708.3 145.8 C706.6 151.5 711.8 152.7 717.5 150.4 C725.6 147.5 731.9 143.5 737.7 144.6 C744 145.8 746.9 150.4 742.9 155.6 C739.4 160.2 738.3 164.2 744 167.6 C749.8 171.1 756.1 171.7 757.3 176.9 C759 182.6 757.3 184.9 763.6 187.8 C768.8 190.1 772.2 187.8 775.1 192.4 C778.6 197 776.3 199.3 783.8 199.9 C791.2 200.5 789.5 206.8 795.3 207.4 C801 209.1 799.3 213.7 801 214.9" />
+          <path id="modernSantoCristoPath" class="modern-river-path modern-river-trace" d="M693.9 87 C689.9 91 684.7 92.8 681.2 97.4 C676.6 102.6 677.8 106 685.3 107.7 C693.3 109.5 688.7 115.8 690.4 119.3 C692.8 123.3 697.4 120.4 702 118.1 C707.7 115.8 715.2 118.7 719.8 120.4 C724.4 122.7 722.1 126.8 719.8 130.2 C716.4 136 710 140.6 708.3 145.8 C706.6 151.5 711.8 152.7 717.5 150.4 C725.6 147.5 731.9 143.5 737.7 144.6 C744 145.8 746.9 150.4 742.9 155.6 C739.4 160.2 738.3 164.2 744 167.6 C749.8 171.1 756.1 171.7 757.3 176.9 C759 182.6 757.3 184.9 763.6 187.8 C768.8 190.1 772.2 187.8 775.1 192.4 C778.6 197 776.3 199.3 783.8 199.9 C791.2 200.5 789.5 206.8 795.3 207.4 C801 209.1 799.3 213.7 801 214.9" />
+          <g id="modernSantoCristoEnd" class="river-endpoint" transform="translate(801 214.9)">
             <circle class="river-endpoint-halo" r="15"/><circle class="river-endpoint-ring" r="8"/><circle class="river-endpoint-core" r="3"/>
-            <path class="river-endpoint-leader" pathLength="1" d="M7 -7 L23 -24 H172"/>
-            <text x="30" y="-35">Rio Cebolaty</text>
+            <path class="river-endpoint-leader" pathLength="1" d="M0 8 V29"/>
+            <text x="0" y="52" text-anchor="middle"><tspan x="0">Rio Santo Cristo</tspan><tspan class="river-historic-name" x="0" dy="21">(Antigo Rio Cebolaty)</tspan></text>
           </g>
         </g>
         <g id="modernPortoMarker" class="modern-landmark marker-porto" transform="translate(245 514)">
@@ -434,6 +434,13 @@
           <circle class="modern-marker-core" r="5" />
           <path d="M-10 -8 L-35 -17 H-281" />
           <text x="-281" y="-50"><tspan x="-281">Município de</tspan><tspan x="-281" dy="23">Porto Vera Cruz - RS</tspan></text>
+        </g>
+        <g id="modernPortoMauaMarker" class="modern-landmark marker-porto-maua" transform="translate(755 94)">
+          <circle class="modern-marker-halo" r="31" />
+          <circle class="modern-marker-ring" r="15" />
+          <circle class="modern-marker-core" r="5" />
+          <path d="M10 7 L28 25 H245" />
+          <text x="38" y="46"><tspan x="38">Município de</tspan><tspan x="38" dy="23">Porto Mauá - RS</tspan></text>
         </g>
         </g>
       </svg>
@@ -514,6 +521,6 @@
     </div>
   </main>
   <script src="map-renderer.js?revisao=78"></script>
-  <script src="app.js?revisao=78"></script>
+  <script src="app.js?revisao=79"></script>
 </body>
 </html>

@@ -25,12 +25,13 @@ const modernPortoMarker = $('#modernPortoMarker');
 const modernCerroMarker = $('#modernCerroMarker');
 const modernLucenaMarker = $('#modernLucenaMarker');
 const modernVeraCruzMarker = $('#modernVeraCruzMarker');
+const modernPortoMauaMarker = $('#modernPortoMauaMarker');
 const modernComandai = $('#modernComandai');
-const modernBugre = $('#modernBugre');
 const modernAmandau = $('#modernAmandau');
+const modernSantoCristo = $('#modernSantoCristo');
 const modernComandaiPath = $('#modernComandaiPath');
-const modernBugrePath = $('#modernBugrePath');
 const modernAmandauPath = $('#modernAmandauPath');
+const modernSantoCristoPath = $('#modernSantoCristoPath');
 const modernCamera = $('#modernCamera');
 const modernWorld = $('#modernWorld');
 const modernOverlay = $('.modern-map-canvas');
@@ -89,7 +90,8 @@ const modernStages = [
   { kicker: 'Localidade atual', title: 'Município de Porto Lucena - RS', focus: [210, 390], zoom: 1 },
   { kicker: 'Correspondência histórica', title: 'Rio Amandaú — Antigo Rio Pindaí', focus: [700, 410], zoom: 1, river: 'amandau' },
   { kicker: 'Localidade atual', title: 'Município de Porto Vera Cruz - RS', focus: [365, 270], zoom: 1 },
-  { kicker: 'Curso d’água', title: 'Rio Cebolaty', focus: [735, 305], zoom: 1, river: 'cebolaty' }
+  { kicker: 'Localidade atual', title: 'Município de Porto Mauá - RS', focus: [755, 94], zoom: 1 },
+  { kicker: 'Correspondência histórica', title: 'Rio Santo Cristo (Antigo Rio Cebolaty)', focus: [741, 151], zoom: 1, river: 'santo-cristo' }
 ];
 // Reference pixels are registered to the unchanged 8000px source, not to the viewport.
 function modernReferencePoint(x, y) { return [(x + 2721.2) / 1.152, (y + 1112.8) / 1.152]; }
@@ -355,9 +357,10 @@ function renderModern({ animate = true } = {}) {
   modernCerroMarker.classList.toggle('is-visible', modernIndex >= 2);
   modernLucenaMarker.classList.toggle('is-visible', modernIndex >= 4);
   modernVeraCruzMarker.classList.toggle('is-visible', modernIndex >= 6);
+  modernPortoMauaMarker.classList.toggle('is-visible', modernIndex >= 7);
   setModernRiver(modernComandai, modernComandaiPath, modernIndex >= 3, animate && stage.river === 'comandai');
   setModernRiver(modernAmandau, modernAmandauPath, modernIndex >= 5, animate && stage.river === 'amandau');
-  setModernRiver(modernBugre, modernBugrePath, modernIndex >= 7, animate && stage.river === 'cebolaty');
+  setModernRiver(modernSantoCristo, modernSantoCristoPath, modernIndex >= 8, animate && stage.river === 'santo-cristo');
   [...modernDots.children].forEach((dot, index) => dot.classList.toggle('active', index === modernIndex));
 }
 
@@ -913,9 +916,10 @@ function showHistoricMap() {
   modernCerroMarker.classList.remove('is-visible');
   modernLucenaMarker.classList.remove('is-visible');
   modernVeraCruzMarker.classList.remove('is-visible');
+  modernPortoMauaMarker.classList.remove('is-visible');
   setModernRiver(modernComandai, modernComandaiPath, false, false);
   setModernRiver(modernAmandau, modernAmandauPath, false, false);
-  setModernRiver(modernBugre, modernBugrePath, false, false);
+  setModernRiver(modernSantoCristo, modernSantoCristoPath, false, false);
   modernScene.classList.remove('is-visible');
   modernScene.setAttribute('aria-hidden', 'true');
   modernMapButton.setAttribute('aria-expanded', 'false');
