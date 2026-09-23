@@ -140,7 +140,8 @@ class TiledMap {
       };
       image.onload = () => settle(true);
       image.onerror = () => settle(false);
-      image.src = `${item.level.url}${item.x}-${item.y}.webp`;
+      const revision = item.level.revision ? `?r=${encodeURIComponent(item.level.revision)}` : '';
+      image.src = `${item.level.url}${item.x}-${item.y}.webp${revision}`;
       this.positionTile(tile);
     }
   }

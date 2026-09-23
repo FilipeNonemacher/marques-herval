@@ -38,7 +38,15 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 77
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 78
+
+- O nível 32K foi refeito sem suavização prévia de linhas e recebeu nitidez
+  controlada antes do recorte. O navegador faz o único acabamento final,
+  evitando o aspecto borrado causado pela dupla suavização no zoom máximo.
+- Os blocos 32K possuem uma revisão própria na URL para impedir que versões
+  antigas permaneçam visíveis pelo cache do navegador.
+- As instruções laterais "Scroll: zoom" e "Arraste para explorar" usam agora o
+  mesmo tom escuro dos controles nos dois mapas, com contraste sobre o papel.
 
 - A ampulheta da transição voltou a uma linguagem minimalista: estrutura fina,
   vidro discreto, areia animada e sombras suaves, sem moldura ornamental.
