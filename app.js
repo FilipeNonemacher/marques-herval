@@ -80,7 +80,7 @@ const stages = [
   { kicker: 'Segunda tentativa', attempt: 'Segunda tentativa', title: 'Rios Comandahy e Pindahy, margem do Rio Uruguay e retorno ao Cerro', duration: '19 DIAS', bounds: [2590, 900, 3300, 1470], route: 1, discoveries: true },
   { kicker: 'Terceira tentativa', attempt: 'Terceira tentativa', title: 'Travessia do Comandahy, Campos das Vaccas Brancas e retorno ao Cerro', bounds: [2760, 840, 3380, 1515], route: 2, vaccas: true },
   { kicker: 'Quarta tentativa', attempt: 'Quarta tentativa', title: 'Rios Comandahy, Pindahy e Cebolaty, Grandes e Valiosos Hervais e retorno ao Cerro', bounds: [2880, 580, 4050, 1450], route: 3, routeDuration: 15000, hervais: true },
-  { kicker: 'Local de referência', title: 'Atual Munícipio de Porto Xavier - RS', bounds: [2460, 975, 2990, 1415], porto: true }
+  { kicker: 'Local de referência', title: 'Atual Município de Porto Xavier - RS', bounds: [2460, 975, 2990, 1415], porto: true }
 ];
 const modernStages = [
   { kicker: 'Mapa atual', title: 'Região da expedição', focus: [460, 430], overview: true },
@@ -95,6 +95,19 @@ const modernStages = [
 ];
 // Reference pixels are registered to the unchanged 8000px source, not to the viewport.
 function modernReferencePoint(x, y) { return [(x + 2721.2) / 1.152, (y + 1112.8) / 1.152]; }
+
+const stageAuraTimers = new WeakMap();
+function replayStageAura(scene) {
+  const previousTimer = stageAuraTimers.get(scene);
+  if (previousTimer) clearTimeout(previousTimer);
+  scene.classList.remove('is-stage-changing');
+  void scene.offsetWidth;
+  scene.classList.add('is-stage-changing');
+  stageAuraTimers.set(scene, setTimeout(() => {
+    scene.classList.remove('is-stage-changing');
+    stageAuraTimers.delete(scene);
+  }, 1400));
+}
 
 function frameModernStage(stage) {
   const compact = innerWidth < 760;
@@ -352,6 +365,7 @@ function renderModern({ animate = true } = {}) {
   modernTitleCard.classList.remove('is-changing');
   void modernTitleCard.offsetWidth;
   modernTitleCard.classList.add('is-changing');
+  if (animate && !reducedMotion.matches) replayStageAura(modernScene);
 
   modernPortoMarker.classList.toggle('is-visible', modernIndex >= 1);
   modernCerroMarker.classList.toggle('is-visible', modernIndex >= 2);
@@ -614,6 +628,7 @@ function render({ animateRoute = true } = {}) {
   titleCard.classList.remove('is-changing');
   void titleCard.offsetWidth;
   titleCard.classList.add('is-changing');
+  if (animateRoute) replayStageAura(mapScene);
   $('#startMarker').classList.toggle('is-visible', active >= 1 && !stage.porto);
   $('#startMarker').classList.toggle('origin-only', active >= 2);
   $('#portoMarker').classList.toggle('is-visible', Boolean(stage.porto));
