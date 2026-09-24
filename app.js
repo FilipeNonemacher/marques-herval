@@ -96,19 +96,6 @@ const modernStages = [
 // Reference pixels are registered to the unchanged 8000px source, not to the viewport.
 function modernReferencePoint(x, y) { return [(x + 2721.2) / 1.152, (y + 1112.8) / 1.152]; }
 
-const stageAuraTimers = new WeakMap();
-function replayStageAura(scene) {
-  const previousTimer = stageAuraTimers.get(scene);
-  if (previousTimer) clearTimeout(previousTimer);
-  scene.classList.remove('is-stage-changing');
-  void scene.offsetWidth;
-  scene.classList.add('is-stage-changing');
-  stageAuraTimers.set(scene, setTimeout(() => {
-    scene.classList.remove('is-stage-changing');
-    stageAuraTimers.delete(scene);
-  }, 1400));
-}
-
 function frameModernStage(stage) {
   const compact = innerWidth < 760;
   const focus = stage.focus;
@@ -365,7 +352,6 @@ function renderModern({ animate = true } = {}) {
   modernTitleCard.classList.remove('is-changing');
   void modernTitleCard.offsetWidth;
   modernTitleCard.classList.add('is-changing');
-  if (animate && !reducedMotion.matches) replayStageAura(modernScene);
 
   modernPortoMarker.classList.toggle('is-visible', modernIndex >= 1);
   modernCerroMarker.classList.toggle('is-visible', modernIndex >= 2);
@@ -628,7 +614,6 @@ function render({ animateRoute = true } = {}) {
   titleCard.classList.remove('is-changing');
   void titleCard.offsetWidth;
   titleCard.classList.add('is-changing');
-  if (animateRoute) replayStageAura(mapScene);
   $('#startMarker').classList.toggle('is-visible', active >= 1 && !stage.porto);
   $('#startMarker').classList.toggle('origin-only', active >= 2);
   $('#portoMarker').classList.toggle('is-visible', Boolean(stage.porto));
