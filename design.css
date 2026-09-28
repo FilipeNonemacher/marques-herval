@@ -259,10 +259,13 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
 }
 .modern-scene:focus { outline: none; }
 .modern-scene.is-annotated .modern-landmark { --landmark: #5b4128; }
-.modern-scene.is-annotated .modern-marker-halo { r: 18px; fill-opacity: .1; stroke-opacity: .24; stroke-width: 1.15; }
-.modern-scene.is-annotated .modern-marker-ring { r: 9.5px; fill: #f7edd5dc; stroke-width: 2.15; }
-.modern-scene.is-annotated .modern-marker-core { r: 3.4px; fill: #5b4128; stroke: #fff4dc; stroke-width: 1.1; }
-.modern-scene.is-annotated .modern-landmark > path { stroke: #5b4128; stroke-width: 1.35; }
+.modern-scene.is-annotated .modern-marker-halo { r: 15px; fill-opacity: .1; stroke-opacity: .24; stroke-width: 1.15; }
+.modern-scene.is-annotated .modern-marker-ring { r: 8px; fill: #f7edd5dc; stroke-width: 2.15; }
+.modern-scene.is-annotated .modern-marker-core { r: 3px; fill: #5b4128; stroke: #fff4dc; stroke-width: 1.1; }
+.modern-scene.is-annotated .modern-landmark > path {
+  fill: none; stroke: #5b4128; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
+}
+.modern-scene.is-annotated .modern-label-rule { vector-effect: non-scaling-stroke; }
 .modern-scene.is-annotated .modern-landmark text,
 .modern-scene.is-annotated .modern-river-group text {
   font: 600 19px/1.25 Cinzel, Georgia, serif; letter-spacing: .035em;
