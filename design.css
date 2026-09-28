@@ -266,6 +266,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   fill: none; stroke: #5b4128; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
 }
 .modern-scene.is-annotated .modern-label-rule { vector-effect: non-scaling-stroke; }
+.modern-scene.is-annotated .modern-label-backdrop { fill: #eef2ed; fill-opacity: .96; stroke: none; }
 .modern-scene.is-annotated .modern-landmark text,
 .modern-scene.is-annotated .modern-river-group text {
   font: 600 19px/1.25 Cinzel, Georgia, serif; letter-spacing: .035em;
@@ -931,6 +932,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   .history-topic-list button span, .history-topic-list button[data-history-topic="vaqueanos"] span { font-size: 13px; }
   /* Earlier routes remain visible; the selected label gets the available reading space. */
   .modern-landmark:not(.is-current) text, .modern-landmark:not(.is-current) > path,
+  .modern-landmark:not(.is-current) .modern-label-backdrop,
   .modern-river-group:not(.is-current) text, .modern-river-group:not(.is-current) .river-endpoint-leader { visibility: hidden; }
 }
 @media (max-width: 389px) {
