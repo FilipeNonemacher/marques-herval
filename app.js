@@ -47,6 +47,7 @@ const historyCollapse = $('#historyCollapse');
 const historyDetail = $('#historyDetail');
 const historyDetailTitle = $('#historyDetailTitle');
 const historyDetailText = $('#historyDetailText');
+const historyDetailCopy = $('.history-detail-copy');
 const historyBack = $('#historyBack');
 const historyTopicButtons = [...document.querySelectorAll('[data-history-topic]')];
 const routeElements = [$('#route1'), $('#route2'), $('#route3'), $('#route4')];
@@ -73,6 +74,7 @@ const MOBILE_MAX_ZOOM = 2.35;
 const MODERN_AWAITING_MARKINGS = modernScene.classList.contains('is-awaiting-markings');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const mobileMapMode = matchMedia('(max-width: 1100px), (pointer: coarse)');
+const compactMapLayout = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-height: 500px)');
 const stages = [
   { kicker: 'Cartografia histórica', title: 'A região da expedição', bounds: [2382, 500, 4237, 1650] },
   { kicker: 'Ponto de partida', title: 'Cerro do Inhacurutum', bounds: [2720, 1090, 3335, 1550], start: true, cerro: true },
@@ -96,7 +98,56 @@ const modernStages = [
 // Reference pixels are registered to the unchanged 8000px source, not to the viewport.
 function modernReferencePoint(x, y) { return [(x + 2721.2) / 1.152, (y + 1112.8) / 1.152]; }
 
+const modernStageAnnotations = [null, modernPortoMarker, modernCerroMarker, modernComandai,
+  modernLucenaMarker, modernAmandau, modernVeraCruzMarker, modernPortoMauaMarker, modernSantoCristo];
+
+// Measure labels as well as routes in source-map coordinates, independent of camera zoom.
+function annotationBounds(elements, svg) {
+  const points = [];
+  for (const element of elements) {
+    const box = element.getBBox();
+    let matrix = new DOMMatrix();
+    for (let node = element; node && node !== svg; node = node.parentElement) {
+      const transforms = node.transform?.baseVal;
+      if (!transforms) continue;
+      let local = new DOMMatrix();
+      for (let i = 0; i < transforms.numberOfItems; i++) local = local.multiply(transforms.getItem(i).matrix);
+      matrix = local.multiply(matrix);
+    }
+    for (const x of [box.x, box.x + box.width]) {
+      for (const y of [box.y, box.y + box.height]) points.push(new DOMPoint(x, y).matrixTransform(matrix));
+    }
+  }
+  return [Math.min(...points.map(p => p.x)), Math.min(...points.map(p => p.y)),
+    Math.max(...points.map(p => p.x)), Math.max(...points.map(p => p.y))];
+}
+
+function compactMapFrame(scene, bounds, maximumZoom) {
+  const controls = scene.querySelector('.map-controls').getBoundingClientRect();
+  const caption = scene.querySelector('.title-card, .modern-title-card');
+  const left = caption.getBoundingClientRect().left;
+  const right = scene.querySelector('.timeline').getBoundingClientRect().left - 16;
+  const top = controls.bottom + 18;
+  let bottom = innerHeight - Math.max(110, caption.offsetHeight + 48);
+  const next = scene.querySelector('.map-switch-next.is-visible');
+  if (next && innerHeight > innerWidth) bottom = Math.min(bottom, next.getBoundingClientRect().top - 18);
+  const width = Math.max(120, right - left);
+  const height = Math.max(90, bottom - top);
+  const [x1, y1, x2, y2] = bounds;
+  const zoom = Math.min(width / (x2 - x1 + 28), height / (y2 - y1 + 28), maximumZoom);
+  // Shift the camera so the content is centered in the unobstructed part of the screen.
+  return [(x1 + x2) / 2 + (innerWidth / 2 - (left + right) / 2) / zoom,
+    (y1 + y2) / 2 + (innerHeight / 2 - (top + bottom) / 2) / zoom, zoom];
+}
+
 function frameModernStage(stage) {
+  if (compactMapLayout.matches) {
+    const annotation = modernStageAnnotations[modernStages.indexOf(stage)];
+    const bounds = annotation ? annotationBounds([annotation], modernOverlay)
+      : [...modernReferencePoint(-40, 20), ...modernReferencePoint(1020, 780)];
+    positionModernCamera(...compactMapFrame(modernScene, bounds, stage.overview ? .7 : 1.152), true);
+    return;
+  }
   const compact = innerWidth < 760;
   const focus = stage.focus;
   const availableScale = Math.min((innerWidth - 100) / 920, (innerHeight - 210) / 530);
@@ -107,26 +158,40 @@ function frameModernStage(stage) {
   positionModernCamera(x, y, scale * 1.152, true);
 }
 const historicalTopics = {
-  vaqueanos: {
-    title: 'Vaqueanos Laureano de Vargas e Jesuíno da Silva Nunes',
-    titleLines: ['Vaqueanos Laureano de Vargas', 'e Jesuíno da Silva Nunes'],
-    text: 'Explorações particulares (1856–1857) — detentores do conhecimento do território'
+  primeira: {
+    title: 'Primeira Tentativa',
+    paragraphs: [
+      'A primeira turma, ou expedição, foi composta pelo cacique Antônio Prudente, pelo vaqueano Laureano de Vargas e mais dez soldados da guarda nacional de São Borja. Ela deixou o acampamento no dia 9 de setembro de 1857 e rumou para o norte por cinco léguas até atingirem as margens do rio Comandaí, atravessando-o em uma jangada.',
+      'Dali seguiram na direção Nordeste por mais seis ou sete léguas distante daquele rio, declinando para o Leste por mais três léguas, abrindo seu caminho sempre por "espesso sertão", como informa a documentação (CÓPIA, 1864). Dali, após avistarem e reconhecerem de perto o rio de Santo Cristo, já bem conhecido pelo cacique de Nonoai, voltaram para o acampamento seguindo em direção ao Sul, chegando na base do Nhacurutú ao meio-dia de 16 de setembro.',
+      'O relato feito pelos membros dessa expedição afirma que estes não encontraram nenhum rasto de índio, campo ou mesmo "um só pau de erva-mate", mesmo depois de terem subido no alto dos picos para fazerem suas observações.'
+    ]
   },
-  indigenas: {
-    title: 'Indígenas de Nonoai',
-    text: 'Liderados pelo Cacique Prudente — guias essenciais na navegação do Alto Uruguai'
+  segunda: {
+    title: 'Segunda Tentativa',
+    paragraphs: [
+      'A segunda expedição foi iniciada no dia 28 do mesmo mês de setembro, guiada por Antônio Prudente, o cacique de Nonoai e pelo vaqueano Jesuíno da Silva Nunes, responsáveis pelo relato da expedição ao comandante Araújo Nóbrega. Partiram com uma força de dois cabos e cinco soldados da guarda nacional de São Borja, além de quatro indígenas ao aldeamento de Nonoai.',
+      'Deixaram o acampamento em direção ao Norte, rumo ao rio Comandaí, atravessando-o com dificuldade, pois estava crescido em volume. Seguiram a marcha na mesma direção norte por diversos dias até chegarem novamente às margens do rio Santo Cristo, ou Pindaí, quando declinaram para oeste, atingindo as margens do rio Uruguai.',
+      'Depois disso se separaram em duas seções, uma formada pelo cacique de Nonoai e seus homens, outro pelo soldado Manoel José Guerreiro e os demais membros da expedição. Ambas as seções voltaram em direção sul, margeando o Uruguai, rumo ao acampamento, aonde chegaram nos dias 13 e 15 de outubro, respectivamente.',
+      'Tal como na expedição anterior Jesuíno Nunes e Antônio Prudente declararam não haver encontrado campo ou faxinal algum, tampouco a presença de indígenas na região. Nunes afirmou ter encontrado dois laranjas em frente ao antigo povoado de São Xavier e, ainda, um erval a duas léguas aquém da foz do Comandaí, do qual saía uma picada de cargueiros, intransitável, que terminava no porto em frente a São Xavier.',
+      'Segundo moradores da região, seria possível retirar de 400 a 500 arrobas de mate daquele erval. A oeste deste, na direção do porto de São Xavier, encontra-se um faxinal de meia légua de comprido por um quarto de largura, com uma boa parte de campo limpo.'
+    ]
   },
-  agrimensor: {
-    title: 'Agrimensor Francisco Rave',
-    text: 'Codificação técnica do conhecimento empírico dos vaqueanos e indígenas'
+  terceira: {
+    title: 'Terceira Tentativa',
+    paragraphs: [
+      'A terceira expedição foi feita entre os dias 3 e 18 de novembro de 1857, tendo como principais guias Laureano de Vargas e Jesuíno da Silva Nunes. Ambos declararam que logo após terem atravessado o Comandaí, pouco mais de uma légua e meia adiante deste rio, reconheceram o lugar em que o mesmo vaqueano Laureano de Vargas havia avistado ao longe o campo que considerou ser o das Vacas Brancas na expedição que havia realizado em março daquele mesmo ano.',
+      'Também deram conta de um faxinal de mais de uma légua de extensão e um quarto de légua de largura na forqueta do rio Pindaí. Segundo os declarantes, tanto o campo como o faxinal estavam repletos de taquarais que tornavam o dito sertão "impenetrável", de modo que, sem queimá-los, seria impossível transitar por eles.',
+      'Apontaram, ainda, não terem encontrado vestígios de populações indígenas transitando pela região, apenas traços de presença muito antigo, razão pela qual presumiram não haver mais grupos indígenas vivendo naquela área.'
+    ]
   },
-  capitao: {
-    title: 'Capitão Tristão de Araújo Nóbrega',
-    text: 'Comando militar da expedição oficial de 1857'
-  },
-  objetivo: {
-    title: 'Objetivo da Missão',
-    text: 'Descobrir e documentar os ricos ervais do Alto Uruguai — riqueza estratégica do Império'
+  quarta: {
+    title: 'Quarta Tentativa',
+    paragraphs: [
+      'A quarta expedição, por fim, teve início no dia 30 de outubro de 1857, tendo como principal guia Antônio Prudente, o cacique de Nonoai, que partiu do acampamento com seis homens armados. Seguiram em direção nordeste, rumo ao rio Comandái, distante cinco léguas do acampamento. Atravessaram o rio em uma jangada e dali seguiram em direção ao Norte por mais três léguas.',
+      'Deste ponto tomaram o rumo noroeste e seguiram por cinco léguas até se depararem com um braço do rio Cebolati, onde declinaram em direção nordeste, marchando cerca de uma légua nessa direção. Dali tomaram o rumo de leste, seguindo por mais seis léguas antes de se virarem para o norte e marcharem por outra légua e meia até atingirem as margens do Cebolati. Atravessaram este rio sem maiores problemas, pois dava vau naquele momento, e avançaram duas léguas na mesma direção norte.',
+      'Neste ponto declinaram novamente para o oeste, direção na qual avançaram mais cinco léguas até se voltarem para o sul, já buscando retornar ao acampamento. Chegaram à base do Nharauí no dia 18 de novembro, após terem ficado vinte dias no sertão.',
+      'Na cópia do auto desta quarta expedição, o cacique de Nonoai declarou ter encontrado alguns faxinais e campestres, mas que entre os rios Pindaí e Cebolati, finalmente, achou um grande erval, até então desconhecido, distante cerca de duas léguas do rio Uruguai. Segundo consta em seu relato, o cacique logrou observá-lo na extensão de uma légua de circunferência, o que lhe deu condição de atestar a quantidade e, principalmente, a grande qualidade das ervas, todas dispostas em um terreno seco e plano.'
+    ]
   }
 };
 
@@ -345,7 +410,6 @@ function renderModern({ animate = true } = {}) {
   }
   const stage = modernStages[modernIndex];
   modernCamera.classList.remove('is-manual');
-  frameModernStage(stage);
   modernStageKicker.textContent = stage.kicker;
   modernStageTitle.textContent = stage.title;
   scheduleMobileStageTitleFit(modernStageTitle);
@@ -361,6 +425,8 @@ function renderModern({ animate = true } = {}) {
   setModernRiver(modernComandai, modernComandaiPath, modernIndex >= 3, animate && stage.river === 'comandai');
   setModernRiver(modernAmandau, modernAmandauPath, modernIndex >= 5, animate && stage.river === 'amandau');
   setModernRiver(modernSantoCristo, modernSantoCristoPath, modernIndex >= 8, animate && stage.river === 'santo-cristo');
+  modernStageAnnotations.forEach((annotation, index) => annotation?.classList.toggle('is-current', index === modernIndex));
+  frameModernStage(stage);
   [...modernDots.children].forEach((dot, index) => dot.classList.toggle('active', index === modernIndex));
 }
 
@@ -457,6 +523,20 @@ function positionCoverMap() {
 }
 
 function fitBounds([left, top, right, bottom], maximumZoom = 1.08) {
+  if (compactMapLayout.matches && active >= 0) {
+    const stage = stages[active];
+    let annotations;
+    if (stage.porto) annotations = [$('#portoMarker')];
+    else if (stage.cerro) annotations = [$('#startMarker'), $('#cerroIllustration')];
+    else if (Number.isInteger(stage.route)) {
+      const details = [firstAttemptMarkers, [...secondAttemptMarkers, secondDiscoveries],
+        [...thirdAttemptMarkers, vaccasFields], [...fourthAttemptMarkers, valuableHervais]];
+      annotations = [routeElements[stage.route], ...details[stage.route]];
+    }
+    const bounds = annotations ? annotationBounds(annotations, historicOverlay) : [left, top, right, bottom];
+    positionCamera(...compactMapFrame(mapScene, bounds, maximumZoom), true);
+    return;
+  }
   const compact = innerWidth < 760;
   const paddingX = compact ? 72 : 190;
   const paddingY = compact ? 110 : 155;
@@ -574,16 +654,9 @@ function animateRouteAndUnit(route, duration) {
   unitAnimation = requestAnimationFrame(frame);
 }
 
-// Phone captions use up to two lines, measured with the actual bundled font.
+// Captions wrap naturally on compact screens; never shrink them to unreadable text.
 function fitMobileStageTitle(title) {
   title.style.fontSize = '';
-  if (innerWidth > 760) return;
-  let size = 13;
-  title.style.fontSize = `${size}px`;
-  while (size > 10 && (title.scrollHeight > parseFloat(getComputedStyle(title).lineHeight) * 2 + 1 || title.scrollWidth > title.clientWidth + 1)) {
-    size -= .25;
-    title.style.fontSize = `${size}px`;
-  }
 }
 
 function scheduleMobileStageTitleFit(title) {
@@ -598,7 +671,6 @@ function render({ animateRoute = true } = {}) {
   const stageTitle = $('#stageTitle');
   const stageDuration = $('#stageDuration');
   camera.classList.remove('is-manual', 'is-dragging');
-  fitBounds(stage.bounds);
   $('#stageIndex').textContent = String(active + 1).padStart(2, '0');
   $('#stageKicker').textContent = stage.kicker;
   titleCard.classList.toggle('is-attempt', Boolean(stage.attempt));
@@ -619,6 +691,7 @@ function render({ animateRoute = true } = {}) {
   $('#portoMarker').classList.toggle('is-visible', Boolean(stage.porto));
   $('#cerroIllustration').classList.toggle('is-visible', Boolean(stage.cerro));
   modernMapButton.classList.toggle('is-visible', active === stages.length - 1);
+  fitBounds(stage.bounds);
   vaccasFields.classList.remove('is-visible');
   valuableHervais.classList.remove('is-visible');
   secondDiscoveries.classList.remove('is-visible');
@@ -715,25 +788,19 @@ function showHistoryTopic(button) {
   if (!topic) return;
   selectedHistoryButton = button;
   historyTopicButtons.forEach((item) => item.classList.toggle('is-active', item === button));
-  historyDetailTitle.classList.toggle('is-two-line', Boolean(topic.titleLines));
-  if (topic.titleLines) {
-    const lines = topic.titleLines.map((line) => {
-      const span = document.createElement('span');
-      span.className = 'history-title-line';
-      span.textContent = line;
-      return span;
-    });
-    historyDetailTitle.replaceChildren(lines[0], document.createTextNode(' '), lines[1]);
-  } else {
-    historyDetailTitle.textContent = topic.title;
-  }
-  historyDetailText.textContent = topic.text;
+  historyDetailTitle.textContent = topic.title;
+  historyDetailText.replaceChildren(...topic.paragraphs.map((text) => {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = text;
+    return paragraph;
+  }));
+  historyDetailCopy.scrollTop = 0;
   historyDetail.classList.remove('is-changing');
   void historyDetail.offsetWidth;
   historyDetail.classList.add('is-changing');
   historicalInfo.classList.add('is-detail-open');
   historyDetail.setAttribute('aria-hidden', 'false');
-  focusAfterTransition(historyDetail, () => selectedHistoryButton === button && historicalInfo.classList.contains('is-detail-open'), 360);
+  focusAfterTransition(historyDetailCopy, () => selectedHistoryButton === button && historicalInfo.classList.contains('is-detail-open'), 360);
 }
 
 function showCover() {
@@ -805,6 +872,7 @@ function hideCostPage() {
     costPage.setAttribute('aria-hidden', 'true');
     mapScene.classList.remove('is-cost-open');
     modernMapButton.setAttribute('aria-expanded', 'false');
+    if (compactMapLayout.matches) fitBounds(stages[active].bounds);
     modernMapButton.focus();
   }, 620);
 }
@@ -923,6 +991,7 @@ function showHistoricMap() {
   modernScene.classList.remove('is-visible');
   modernScene.setAttribute('aria-hidden', 'true');
   modernMapButton.setAttribute('aria-expanded', 'false');
+  if (compactMapLayout.matches) fitBounds(stages[active].bounds);
   setTimeout(() => modernMapButton.focus(), 520);
 }
 
@@ -1249,7 +1318,8 @@ addEventListener('resize', () => {
   previousViewport = { width: innerWidth, height: innerHeight };
   positionCoverMap();
   if (modernActive) {
-    positionModernCamera(modernView.x, modernView.y, modernView.zoom);
+    if (chromeOnlyResize) positionModernCamera(modernView.x, modernView.y, modernView.zoom);
+    else frameModernStage(modernStages[modernIndex]);
     // Mobile browser bars resize the visual viewport repeatedly. Repainting the
     // current camera is enough; rebuilding every marker and river here caused
     // visible hitches on iOS and Android.

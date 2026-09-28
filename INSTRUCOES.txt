@@ -20,8 +20,8 @@ CONTROLES DA APRESENTAÇÃO
 NO CELULAR
 - Toque nos botões para entrar e avançar na apresentação.
 - Arraste os mapas com um dedo; use dois dedos ou os botões − e + para o zoom.
-- Na tabela, deslize para cima e para baixo para ler. Todas as colunas aparecem juntas;
-  use dois dedos para ampliar a leitura quando desejar.
+- Nos celulares, os custos se reorganizam em blocos por produto, com rótulos e valores
+  legíveis. Deslize para cima e para baixo para consultar todos os itens e os totais.
 - Use “Prosseguir ao mapa atual” para continuar ou “Voltar ao mapa histórico” para retornar.
 - Os controles e o conteúdo se adaptam à orientação da tela.
 
@@ -38,7 +38,16 @@ ARQUIVOS PRINCIPAIS PARA CONTINUAR O TRABALHO
 - app.js: etapas, rotas, zoom e interações.
 - public/assets: mapa, brasão, Osório, tropas e imagens de referência.
 
-OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 78
+OTIMIZAÇÃO E RESPONSIVIDADE — REVISÃO 82
+
+- Os controles dos mapas possuem áreas separadas para zoom, navegação e legendas,
+  tanto em retrato quanto em paisagem. Os botões de toque têm pelo menos 44 pixels.
+- O enquadramento móvel considera a área ocupada pelos controles e o tamanho dos
+  nomes das marcações. Ao girar o celular, a etapa atual é reenquadrada.
+- No mapa atual, os cursos e pontos anteriores continuam visíveis; o nome da
+  marcação selecionada recebe prioridade de leitura na tela pequena.
+- A tabela usa blocos por produto até 760 pixels, preservando todos os valores.
+  Em telas maiores, mantém a apresentação tabular com cinco colunas.
 
 - O nível 32K foi refeito sem suavização prévia de linhas e recebeu nitidez
   controlada antes do recorte. O navegador faz o único acabamento final,
@@ -164,10 +173,10 @@ quando o mapa atual é aberto, e vice-versa.
 O mapa histórico e suas marcações mantêm exatamente as mesmas coordenadas.
 Os filtros de cor são processados somente na área visível, e as animações do
 mapa histórico ficam pausadas enquanto ele está encoberto pelo mapa atual.
-As legendas históricas usam até duas linhas no celular, com fonte maior, e todo o
-bloco — número, divisória e texto — fica recuado das bordas. A tabela exibe
-todas as cinco colunas de uma só vez, sem corte horizontal, mantendo a ampliação
-por gesto do navegador. O botão que leva à tabela ganhou distância segura da
+As legendas históricas quebram as linhas naturalmente no celular, com fonte legível,
+e todo o bloco — número, divisória e texto — fica recuado das bordas. Os custos
+se reorganizam em blocos com rótulos no celular e mantêm as cinco colunas no
+computador. O botão que leva à tabela ganhou distância segura da
 legenda e, no mapa atual, os controles das marcações ficam na lateral direita.
 Durante o arraste, efeitos que não alteram o conteúdo são temporariamente pausados;
 animações fora de cena deixam de consumir processamento. Isso melhora a fluidez

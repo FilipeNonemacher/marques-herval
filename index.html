@@ -12,7 +12,7 @@
   <script src="map-assets.js?revisao=79"></script>
   <script>document.documentElement.style.setProperty('--cover-preview', `url("${MAP_ASSETS.cover.tiny}")`);</script>
   <link rel="stylesheet" href="styles.css?revisao=78" />
-  <link rel="stylesheet" href="design.css?revisao=81" />
+  <link rel="stylesheet" href="design.css?revisao=83" />
 </head>
 <body>
   <main id="experience">
@@ -198,7 +198,8 @@
               <circle class="marker-ring" cx="2120" cy="1835" r="34" />
               <circle class="marker-core" cx="2120" cy="1835" r="10" />
               <path class="leader" d="M2086 1801 L2037 1752 L1877 1752" />
-              <text class="align-end" x="1856" y="1733">Atual Município de Porto Xavier - RS</text>
+              <text class="align-end porto-label-desktop" x="1856" y="1733">Atual Município de Porto Xavier - RS</text>
+              <text class="align-end porto-label-mobile" x="1856" y="1696"><tspan x="1856">Atual Município de</tspan><tspan x="1856" dy="37">Porto Xavier - RS</tspan></text>
             </g>
 
             <g id="arrivalMarker1" class="arrival-marker" transform="translate(2557 2164)" aria-hidden="true">
@@ -258,12 +259,11 @@
             <div><small>Expedição de 1857</small><h2>Contextos históricos</h2></div>
             <button id="historyCollapse" type="button" aria-label="Recolher contextos históricos"><span>Recolher</span><i>↑</i></button>
           </header>
-          <nav class="history-topic-list" aria-label="Selecione um contexto histórico">
-            <button type="button" data-history-topic="vaqueanos"><span>Vaqueanos Laureano de Vargas<br />e Jesuíno da Silva Nunes</span><i>→</i></button>
-            <button type="button" data-history-topic="indigenas"><span>Indígenas de Nonoai</span><i>→</i></button>
-            <button type="button" data-history-topic="agrimensor"><span>Agrimensor Francisco Rave</span><i>→</i></button>
-            <button type="button" data-history-topic="capitao"><span>Capitão Tristão de Araújo Nóbrega</span><i>→</i></button>
-            <button type="button" data-history-topic="objetivo"><span>Objetivo da Missão</span><i>→</i></button>
+          <nav class="history-topic-list" aria-label="Selecione uma tentativa da expedição">
+            <button type="button" data-history-topic="primeira"><span>Primeira Tentativa</span><i aria-hidden="true">→</i></button>
+            <button type="button" data-history-topic="segunda"><span>Segunda Tentativa</span><i aria-hidden="true">→</i></button>
+            <button type="button" data-history-topic="terceira"><span>Terceira Tentativa</span><i aria-hidden="true">→</i></button>
+            <button type="button" data-history-topic="quarta"><span>Quarta Tentativa</span><i aria-hidden="true">→</i></button>
           </nav>
         </section>
 
@@ -272,10 +272,10 @@
             <small>Contexto histórico</small>
             <button id="historyBack" type="button" aria-label="Voltar aos títulos"><i>←</i><span>Voltar aos títulos</span></button>
           </header>
-          <div class="history-detail-copy">
+          <div class="history-detail-copy" role="region" aria-labelledby="historyDetailTitle" tabindex="0">
             <h3 id="historyDetailTitle"></h3>
             <span aria-hidden="true"></span>
-            <p id="historyDetailText"></p>
+            <div id="historyDetailText" class="history-detail-text"></div>
           </div>
         </article>
       </aside>
@@ -327,7 +327,7 @@
           <span aria-hidden="true"></span>
         </header>
 
-        <p class="cost-scroll-hint">A tabela está completa na tela. Use dois dedos para ampliar a leitura.</p>
+        <p class="cost-scroll-hint">Deslize para consultar todos os valores.</p>
         <div class="cost-table-shell" role="region" aria-label="Tabela de custos da expedição" tabindex="0">
           <table class="cost-table">
             <colgroup>
@@ -346,18 +346,18 @@
             <tbody class="food-table-body">
               <tr class="cost-section-row"><th colspan="5">Custo geral de alimentação da expedição de 1857</th></tr>
               <tr class="cost-column-row">
-                <th>Produto</th>
-                <th>Quantidade diária por homem</th>
-                <th>Quantidade total por homem — 120 dias</th>
-                <th>Custo convertido em moeda corrente</th>
-                <th>Total em moeda corrente</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade diária por homem</th>
+                <th scope="col">Quantidade total por homem — 120 dias</th>
+                <th scope="col">Custo convertido em moeda corrente</th>
+                <th scope="col">Total em moeda corrente</th>
               </tr>
-              <tr><td>Carne</td><td>500 g</td><td>60 kg</td><td>42 reais, o quilo</td><td>2.520 reais por homem</td></tr>
-              <tr><td>Farinha de mandioca</td><td>300 g</td><td>40 kg</td><td>15 reais, o quilo</td><td>600 reais por homem</td></tr>
-              <tr><td>Feijão</td><td>200 g</td><td>24 kg</td><td>20 reais, o quilo</td><td>48 reais por homem</td></tr>
-              <tr><td>Cachaça</td><td>50 a 100 ml</td><td>6 a 12 litros</td><td>Sem cotação disponível</td><td>—</td></tr>
-              <tr><td>Bolacha dura militar</td><td>100 g</td><td>12 kg</td><td>Era confeccionada no quartel</td><td>—</td></tr>
-              <tr><td>Café</td><td>25 g</td><td>3 kg</td><td>35 reais, o quilo</td><td>105 reais por homem</td></tr>
+              <tr><td>Carne</td><td data-label="Diária por homem">500 g</td><td data-label="Por homem · 120 dias">60 kg</td><td data-label="Custo em reais">42 reais, o quilo</td><td data-label="Total em reais">2.520 reais por homem</td></tr>
+              <tr><td>Farinha de mandioca</td><td data-label="Diária por homem">300 g</td><td data-label="Por homem · 120 dias">40 kg</td><td data-label="Custo em reais">15 reais, o quilo</td><td data-label="Total em reais">600 reais por homem</td></tr>
+              <tr><td>Feijão</td><td data-label="Diária por homem">200 g</td><td data-label="Por homem · 120 dias">24 kg</td><td data-label="Custo em reais">20 reais, o quilo</td><td data-label="Total em reais">48 reais por homem</td></tr>
+              <tr><td>Cachaça</td><td data-label="Diária por homem">50 a 100 ml</td><td data-label="Por homem · 120 dias">6 a 12 litros</td><td data-label="Custo em reais">Sem cotação disponível</td><td data-label="Total em reais">—</td></tr>
+              <tr><td>Bolacha dura militar</td><td data-label="Diária por homem">100 g</td><td data-label="Por homem · 120 dias">12 kg</td><td data-label="Custo em reais">Era confeccionada no quartel</td><td data-label="Total em reais">—</td></tr>
+              <tr><td>Café</td><td data-label="Diária por homem">25 g</td><td data-label="Por homem · 120 dias">3 kg</td><td data-label="Custo em reais">35 reais, o quilo</td><td data-label="Total em reais">105 reais por homem</td></tr>
             </tbody>
             <tfoot>
               <tr><th colspan="3">Total por homem <small>Total de homens empregados: 45 homens, entre militares e civis.</small></th><td colspan="2"><strong>3.273,00 por homem</strong></td></tr>
@@ -521,6 +521,6 @@
     </div>
   </main>
   <script src="map-renderer.js?revisao=78"></script>
-  <script src="app.js?revisao=81"></script>
+  <script src="app.js?revisao=83"></script>
 </body>
 </html>
