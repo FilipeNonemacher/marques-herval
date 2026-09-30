@@ -267,6 +267,8 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
   fill: none; stroke: #5b4128; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
 }
 .modern-scene.is-annotated .modern-label-rule { vector-effect: non-scaling-stroke; }
+#modernPortoMauaMarker > .modern-label-rule,
+#modernPortoMauaMarker > text { transform: translateX(0); }
 .modern-scene.is-annotated .modern-landmark text,
 .modern-scene.is-annotated .modern-river-group text {
   font: 600 19px/1.25 Cinzel, Georgia, serif; letter-spacing: .035em;
