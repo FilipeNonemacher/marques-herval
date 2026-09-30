@@ -253,6 +253,7 @@ button:focus-visible { outline: 2px solid #f0cf8b; outline-offset: 5px; }
 .attempt-detail::before { content: ' — '; }
 .modern-world { width: 8000px; height: 8000px; }
 .modern-map-canvas {
+  overflow: visible;
   filter: none;
   shape-rendering: geometricPrecision;
   text-rendering: geometricPrecision;
