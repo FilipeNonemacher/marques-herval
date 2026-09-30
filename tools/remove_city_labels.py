@@ -31,6 +31,12 @@ KEEP_MEDIUM_CITIES = {
     "torres", "tramandai", "vacaria", "venancio aires",
 }
 
+# This oversized river caption conflicts with the Porto Maua callout. The PDF
+# draws every label twice (white outline, then blue fill), at the same origin.
+PORTO_MAUA_URUGUAI_LABEL_ORIGIN = (2264.967, 5239.829)
+MODERN_LABEL_CHANGE_BOUNDS = (2990, 950, 3230, 1040)
+MODERN_ASSET_REVISION = "100"
+
 
 def normalize_label(value: object) -> str:
     """Normalize the PDF's custom single-byte accent encoding for matching."""
@@ -64,18 +70,22 @@ def shown_text(operands: list[object], operator: bytes) -> str:
     return str(operands[0])
 
 
-def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int]:
+def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int]:
     reader = PdfReader(source)
     page = reader.pages[0]
     content = ContentStream(page.get_contents(), reader)
     current_font_size = 0.0
     removed_cities = 0
     removed_lajeados = 0
+    removed_uruguai_labels = 0
+    text_origin: tuple[float, float] | None = None
     cleaned_operations = []
 
     for operands, operator in content.operations:
         if operator == b"Tf":
             current_font_size = float(operands[1])
+        elif operator == b"Tm":
+            text_origin = (float(operands[4]), float(operands[5]))
 
         remove = False
         if operator in {b"Tj", b"TJ", b"'", b'"'}:
@@ -90,6 +100,11 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int]:
             elif 16.9 <= current_font_size <= 17.1 and not is_kept_city(label):
                 removed_cities += 1
                 remove = True
+            elif label == "rio uruguai" and text_origin is not None:
+                target_x, target_y = PORTO_MAUA_URUGUAI_LABEL_ORIGIN
+                if abs(text_origin[0] - target_x) < 0.01 and abs(text_origin[1] - target_y) < 0.01:
+                    removed_uruguai_labels += 1
+                    remove = True
 
         if not remove:
             cleaned_operations.append((operands, operator))
@@ -100,7 +115,7 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int]:
     writer.add_page(page)
     with destination.open("wb") as output:
         writer.write(output)
-    return removed_cities, removed_lajeados
+    return removed_cities, removed_lajeados, removed_uruguai_labels
 
 
 def render_site_asset(source_pdf: Path, destination_png: Path) -> tuple[int, int]:
@@ -136,6 +151,29 @@ def generate_delivery_assets(image_path: Path, assets_dir: Path, manifest_path: 
                     exact=True,
                 )
 
+    # The two higher-density levels are intentionally tiled without allocating
+    # a 16K/32K full-frame bitmap. Only tiles intersecting the edited caption
+    # need to be refreshed; resize(box=...) preserves the shared source grid.
+    x1, y1, x2, y2 = MODERN_LABEL_CHANGE_BOUNDS
+    for level in (16000, 32000):
+        scale = level / image.width
+        level_dir = tile_root / str(level)
+        level_dir.mkdir(parents=True, exist_ok=True)
+        first_col = int(x1 * scale) // 512
+        last_col = int((x2 * scale - 1) // 512)
+        first_row = int(y1 * scale) // 512
+        last_row = int((y2 * scale - 1) // 512)
+        for row in range(first_row, last_row + 1):
+            for col in range(first_col, last_col + 1):
+                source_box = (
+                    col * 512 / scale,
+                    row * 512 / scale,
+                    (col + 1) * 512 / scale,
+                    (row + 1) * 512 / scale,
+                )
+                tile = image.resize((512, 512), Image.Resampling.LANCZOS, box=source_box)
+                tile.save(level_dir / f"{col}-{row}.webp", "WEBP", quality=96, method=6, exact=True)
+
     preview = image.resize((2400, 2400), Image.Resampling.LANCZOS)
     preview.save(assets_dir / "map-modern-preview.webp", "WEBP", quality=94, method=6, exact=True)
     tiny = image.resize((256, 256), Image.Resampling.LANCZOS)
@@ -149,6 +187,8 @@ def generate_delivery_assets(image_path: Path, assets_dir: Path, manifest_path: 
     header = text[:prefix_at]
     manifest = json.loads(text[prefix_at + len(prefix):].rstrip().rstrip(";"))
     manifest["modern"]["tiny"] = tiny_url
+    for level in manifest["modern"]["levels"]:
+        level["revision"] = MODERN_ASSET_REVISION
     manifest_path.write_text(header + prefix + json.dumps(manifest, separators=(",", ":")) + ";\n", encoding="utf-8")
 
 
@@ -162,12 +202,13 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory(prefix="expedicao-map-") as temp_dir:
         clean_pdf = Path(temp_dir) / "mapa-simplificado.pdf"
-        cities, lajeados = build_clean_pdf(args.source, clean_pdf)
+        cities, lajeados, uruguai_labels = build_clean_pdf(args.source, clean_pdf)
         width, height = render_site_asset(clean_pdf, args.destination)
     if args.assets_dir and args.manifest:
         generate_delivery_assets(args.destination, args.assets_dir, args.manifest)
 
     print(f"Removed {cities} municipal-label and {lajeados} lajeado text operations")
+    print(f"Removed {uruguai_labels} Rio Uruguai text operations at Porto Maua")
     print(f"Rendered {width}x{height}: {args.destination}")
 
 
