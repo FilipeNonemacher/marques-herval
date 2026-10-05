@@ -86,13 +86,13 @@ const stages = [
 ];
 const modernStages = [
   { kicker: 'Mapa atual', title: 'Região da expedição', focus: [460, 430], overview: true },
-  { kicker: 'Localidade atual', title: 'Município de Porto Xavier - RS', focus: [145, 485], zoom: 1 },
-  { kicker: 'Ponto de partida da Expedição', title: 'Cerro do Inhacurutum', focus: [260, 625], zoom: 1 },
+  { kicker: 'Localidade atual', title: 'Município de Porto Xavier - RS', focus: [142, 480], zoom: 1 },
+  { kicker: 'Ponto de partida da Expedição', title: 'Cerro do Inhacurutum', focus: [259, 623], zoom: 1 },
   { kicker: 'Curso d’água', title: 'Rio Comandaí', focus: [490, 500], zoom: 1, river: 'comandai' },
-  { kicker: 'Localidade atual', title: 'Município de Porto Lucena - RS', focus: [210, 390], zoom: 1 },
+  { kicker: 'Localidade atual', title: 'Município de Porto Lucena - RS', focus: [215, 399], zoom: 1 },
   { kicker: 'Correspondência histórica', title: 'Rio Amandaú — Antigo Rio Pindaí', focus: [700, 410], zoom: 1, river: 'amandau' },
-  { kicker: 'Localidade atual', title: 'Município de Porto Vera Cruz - RS', focus: [365, 270], zoom: 1 },
-  { kicker: 'Localidade atual', title: 'Município de Porto Mauá - RS', focus: [755, 94], zoom: 1 },
+  { kicker: 'Localidade atual', title: 'Município de Porto Vera Cruz - RS', focus: [365, 268], zoom: 1 },
+  { kicker: 'Localidade atual', title: 'Município de Porto Mauá - RS', focus: [754, 93], zoom: 1 },
   { kicker: 'Correspondência histórica', title: 'Rio Santo Cristo (Antigo Rio Cebolaty)', focus: [741, 151], zoom: 1, river: 'santo-cristo' }
 ];
 // Reference pixels are registered to the unchanged 8000px source, not to the viewport.
