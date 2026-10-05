@@ -35,10 +35,35 @@ KEEP_MEDIUM_CITIES = {
     "torres", "tramandai", "vacaria", "venancio aires",
 }
 
+MAJOR_CITIES = {
+    "Alvorada", "Bagé", "Bento Gonçalves", "Cachoeirinha", "Canoas",
+    "Caxias do Sul", "Erechim", "Gravataí", "Ijuí", "Novo Hamburgo",
+    "Passo Fundo", "Pelotas", "Rio Grande", "Santa Cruz do Sul",
+    "Santa Maria", "Santo Ângelo", "Sapucaia do Sul", "São Borja",
+    "São Leopoldo", "Uruguaiana", "Viamão",
+}
+
+CITY_DISPLAY_OVERRIDES = {
+    "camaqua": "Camaquã",
+    "capao da canoa": "Capão da Canoa",
+    "estancia velha": "Estância Velha",
+    "guaiba": "Guaíba",
+    "osorio": "Osório",
+    "parobe": "Parobé",
+    "portao": "Portão",
+    "rosario do sul": "Rosário do Sul",
+    "sao borja": "São Borja",
+    "sao gabriel": "São Gabriel",
+    "sao lourenco do sul": "São Lourenço do Sul",
+    "sao luiz gonzaga": "São Luiz Gonzaga",
+    "tramandai": "Tramandaí",
+    "venancio aires": "Venâncio Aires",
+}
+
 # This oversized river caption conflicts with the Porto Maua callout. The PDF
 # draws every label twice (white outline, then blue fill), at the same origin.
 PORTO_MAUA_URUGUAI_LABEL_ORIGIN = (2264.967, 5239.829)
-MODERN_ASSET_REVISION = "102"
+MODERN_ASSET_REVISION = "104"
 TILE_SIZE = 512
 HIGH_DENSITY_LEVELS = (16000, 32000)
 VECTOR_RENDER_BLOCK_TILES = 4
@@ -90,6 +115,35 @@ def is_kept_city(label: str) -> bool:
     return key in keep_keys or key in {"cng", "slrndsl"}
 
 
+def canonical_city_name(label: str) -> str | None:
+    """Recover accents lost by the source PDF's embedded single-byte font."""
+    minor_words = {"da", "das", "de", "do", "dos"}
+
+    def display_name(name: str) -> str:
+        if name in CITY_DISPLAY_OVERRIDES:
+            return CITY_DISPLAY_OVERRIDES[name]
+        return " ".join(
+            part if index and part in minor_words else part.title()
+            for index, part in enumerate(name.split())
+        )
+
+    # Regional centres are applied last so their canonical accented spelling
+    # wins when a name also appears in the medium-city allow-list.
+    canonical_names = [display_name(name) for name in sorted(KEEP_MEDIUM_CITIES)]
+    canonical_names.extend(sorted(MAJOR_CITIES))
+    by_key = {consonant_key(normalize_label(name)): name for name in canonical_names}
+    # Cedilla is encoded as a control byte and therefore disappears instead
+    # of decomposing to ``c`` in these three source labels.
+    by_key.update(
+        {
+            "bntgnlvs": "Bento Gonçalves",
+            "cng": "Canguçu",
+            "slrndsl": "São Lourenço do Sul",
+        }
+    )
+    return by_key.get(consonant_key(normalize_label(label)))
+
+
 def shown_text(operands: list[object], operator: bytes) -> str:
     if not operands:
         return ""
@@ -98,7 +152,18 @@ def shown_text(operands: list[object], operator: bytes) -> str:
     return str(operands[0])
 
 
-def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int, int]:
+def build_clean_pdf(
+    source: Path,
+    destination: Path,
+) -> tuple[
+    int,
+    int,
+    int,
+    int,
+    int,
+    list[tuple[str, float, float, float]],
+    list[tuple[float, float, float, float]],
+]:
     reader = PdfReader(source)
     writer = PdfWriter()
     writer.append_pages_from_reader(reader)
@@ -111,8 +176,11 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int
     removed_route_labels = 0
     removed_road_paths = 0
     text_origin: tuple[float, float] | None = None
+    text_matrix: tuple[float, float, float, float, float, float] | None = None
     stroke_color: tuple[float, ...] | None = None
     stroke_stack: list[tuple[float, ...] | None] = []
+    city_labels: dict[tuple[str, float, float, float], None] = {}
+    protected_text_boxes: dict[tuple[float, float, float, float], None] = {}
     cleaned_operations = []
     pending_path = []
 
@@ -147,6 +215,7 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int
             current_font_size = float(operands[1])
         elif operator == b"Tm":
             text_origin = (float(operands[4]), float(operands[5]))
+            text_matrix = tuple(float(value) for value in operands[:6])
 
         remove = False
         if operator in {b"Tj", b"TJ", b"'", b'"'}:
@@ -159,11 +228,22 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int
             elif current_font_size <= 8.1 and "lajeado" in label:
                 removed_lajeados += 1
                 remove = True
-            # Municipal captions use the 17-point tier. Major cities are a
-            # larger tier and therefore pass through unchanged.
-            elif 16.9 <= current_font_size <= 17.1 and not is_kept_city(label):
+            # Municipal captions use the 17-point tier. Retained municipalities
+            # and the 26-point regional centres are redrawn after the official
+            # roads, so their text remains unobstructed without an opaque box.
+            elif 16.9 <= current_font_size <= 17.1:
+                if is_kept_city(label) and text_origin is not None:
+                    city_name = canonical_city_name(label)
+                    if city_name:
+                        city_labels[(city_name, text_origin[0], text_origin[1], 17.0)] = None
                 removed_cities += 1
                 remove = True
+            elif 25.9 <= current_font_size <= 26.1 and text_origin is not None:
+                city_name = canonical_city_name(label)
+                if city_name:
+                    city_labels[(city_name, text_origin[0], text_origin[1], 26.0)] = None
+                    removed_cities += 1
+                    remove = True
             elif label == "rio uruguai" and text_origin is not None:
                 target_x, target_y = PORTO_MAUA_URUGUAI_LABEL_ORIGIN
                 if abs(text_origin[0] - target_x) < 0.01 and abs(text_origin[1] - target_y) < 0.01:
@@ -174,6 +254,33 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int
 
         if not remove:
             cleaned_operations.append((operands, operator))
+            if (
+                operator in {b"Tj", b"TJ", b"'", b'"'}
+                and text_matrix is not None
+                and current_font_size >= 7.5
+            ):
+                visible_text = normalize_label(shown_text(operands, operator))
+                if visible_text:
+                    a, b, c, d, x, y = text_matrix
+                    width = len(visible_text) * current_font_size * 0.52
+                    corners = (
+                        (x, y),
+                        (x + a * width, y + b * width),
+                        (x + c * current_font_size, y + d * current_font_size),
+                        (
+                            x + a * width + c * current_font_size,
+                            y + b * width + d * current_font_size,
+                        ),
+                    )
+                    padding = 3.0
+                    protected_text_boxes[
+                        (
+                            round(min(point[0] for point in corners) - padding, 2),
+                            round(min(point[1] for point in corners) - padding, 2),
+                            round(max(point[0] for point in corners) + padding, 2),
+                            round(max(point[1] for point in corners) + padding, 2),
+                        )
+                    ] = None
 
     cleaned_operations.extend(pending_path)
 
@@ -187,6 +294,8 @@ def build_clean_pdf(source: Path, destination: Path) -> tuple[int, int, int, int
         removed_uruguai_labels,
         removed_route_labels,
         removed_road_paths,
+        sorted(city_labels),
+        sorted(protected_text_boxes),
     )
 
 
@@ -221,6 +330,27 @@ def point_along(points: list[tuple[float, float]], fraction: float) -> tuple[flo
     return points[-1]
 
 
+def point_and_normal_along(
+    points: list[tuple[float, float]],
+    fraction: float,
+) -> tuple[float, float, float, float]:
+    """Return a point and a consistently upward-facing unit normal."""
+    target = polyline_length(points) * fraction
+    traversed = 0.0
+    for (x1, y1), (x2, y2) in zip(points, points[1:]):
+        dx, dy = x2 - x1, y2 - y1
+        segment = math.hypot(dx, dy)
+        if traversed + segment >= target and segment:
+            ratio = (target - traversed) / segment
+            x, y = x1 + dx * ratio, y1 + dy * ratio
+            nx, ny = -dy / segment, dx / segment
+            if ny < 0:
+                nx, ny = -nx, -ny
+            return x, y, nx, ny
+        traversed += segment
+    return (*points[-1], 0.0, 1.0)
+
+
 def draw_grouped_paths(
     pdf: canvas.Canvas,
     groups: dict[tuple[str, str], list[list[tuple[float, float]]]],
@@ -236,9 +366,16 @@ def draw_grouped_paths(
             width = 3.25 if federal else 2.55
             dash = []
         else:
-            color = "#cf9f4d" if federal else "#c9ad72"
-            width = 2.25 if federal else 1.65
-            dash = [8, 5] if is_planned or is_work else ([3, 3] if is_unpaved else [])
+            if is_unpaved:
+                color = "#b9a47b"
+            elif is_work:
+                color = "#c49952" if federal else "#bea067"
+            else:
+                color = "#cf9f4d" if federal else "#c9ad72"
+            width = (2.05 if federal else 1.48) if is_unpaved else (2.25 if federal else 1.65)
+            # Implemented and work-in-progress segments are real, continuous
+            # roads. Only routes that are still planned use a broken stroke.
+            dash = [8, 5] if is_planned else []
         if "duplicada" in status:
             width += 0.35
         pdf.setStrokeColor(HexColor(color))
@@ -266,7 +403,33 @@ def boxes_overlap(first: tuple[float, float, float, float], second: tuple[float,
     )
 
 
-def add_official_roads(source: Path, destination: Path, roads_path: Path) -> tuple[int, int]:
+def draw_city_labels(
+    pdf: canvas.Canvas,
+    labels: list[tuple[str, float, float, float]],
+) -> None:
+    """Draw city names above roads, with transparent inter-letter space."""
+    for label, x, y, size in labels:
+        major = size > 20
+        font = "Helvetica-Bold" if major else "Helvetica"
+        pdf.saveState()
+        pdf.setLineWidth(0.45 if major else 0.30)
+        pdf.setStrokeColor(HexColor("#f7f8f2"))
+        pdf.setFillColor(HexColor("#263d3a"))
+        text = pdf.beginText(x, y)
+        text.setFont(font, size)
+        text.setTextRenderMode(2)
+        text.textOut(label)
+        pdf.drawText(text)
+        pdf.restoreState()
+
+
+def add_official_roads(
+    source: Path,
+    destination: Path,
+    roads_path: Path,
+    city_labels: list[tuple[str, float, float, float]],
+    protected_text_boxes: list[tuple[float, float, float, float]],
+) -> tuple[int, int]:
     if not roads_path.exists():
         raise FileNotFoundError(
             f"Official DAER road data is missing: {roads_path}. "
@@ -300,7 +463,11 @@ def add_official_roads(source: Path, destination: Path, roads_path: Path) -> tup
     draw_grouped_paths(overlay, groups, casing=True)
     draw_grouped_paths(overlay, groups, casing=False)
 
-    occupied: list[tuple[float, float, float, float]] = []
+    occupied: list[tuple[float, float, float, float]] = list(protected_text_boxes)
+    for city, x, y, size in city_labels:
+        font = "Helvetica-Bold" if size > 20 else "Helvetica"
+        width = stringWidth(city, font, size)
+        occupied.append((x - 3, y - size * 0.3, x + width + 3, y + size * 0.9))
     label_count = 0
     for label, paths in sorted(label_paths.items()):
         ranked = sorted(paths, key=polyline_length, reverse=True)
@@ -312,20 +479,13 @@ def add_official_roads(source: Path, destination: Path, roads_path: Path) -> tup
                 break
             width = stringWidth(label, "Helvetica-Bold", 8.2)
             for fraction in (0.50, 0.32, 0.68, 0.20, 0.80):
-                x, y = point_along(points, fraction)
+                x, y, normal_x, normal_y = point_and_normal_along(points, fraction)
+                offset = 10.5
+                x += normal_x * offset
+                y += normal_y * offset
                 box = (x - width / 2 - 4, y - 5.5, x + width / 2 + 4, y + 5.5)
                 if any(boxes_overlap(box, previous) for previous in occupied):
                     continue
-                overlay.setFillColor(HexColor("#eef2ec"))
-                overlay.roundRect(
-                    x - width / 2 - 2.6,
-                    y - 4.8,
-                    width + 5.2,
-                    10.6,
-                    1.8,
-                    stroke=0,
-                    fill=1,
-                )
                 overlay.setFillColor(HexColor("#8c6729"))
                 overlay.setFont("Helvetica-Bold", 8.2)
                 overlay.drawString(x - width / 2, y - 2.7, label)
@@ -333,6 +493,8 @@ def add_official_roads(source: Path, destination: Path, roads_path: Path) -> tup
                 label_count += 1
                 placed_for_route += 1
                 break
+
+    draw_city_labels(overlay, city_labels)
 
     source_text = overlay.beginText(180, 78)
     source_text.setTextRenderMode(0)
@@ -502,8 +664,22 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="expedicao-map-") as temp_dir:
         clean_pdf = Path(temp_dir) / "mapa-simplificado.pdf"
         official_pdf = Path(temp_dir) / "mapa-oficial-daer.pdf"
-        cities, lajeados, uruguai_labels, route_labels, road_paths = build_clean_pdf(args.source, clean_pdf)
-        official_features, official_labels = add_official_roads(clean_pdf, official_pdf, OFFICIAL_ROADS)
+        (
+            cities,
+            lajeados,
+            uruguai_labels,
+            route_labels,
+            road_paths,
+            city_labels,
+            protected_text_boxes,
+        ) = build_clean_pdf(args.source, clean_pdf)
+        official_features, official_labels = add_official_roads(
+            clean_pdf,
+            official_pdf,
+            OFFICIAL_ROADS,
+            city_labels,
+            protected_text_boxes,
+        )
         width, height = render_site_asset(official_pdf, args.destination)
         if args.assets_dir and args.manifest:
             generate_delivery_assets(args.destination, official_pdf, args.assets_dir, args.manifest)
