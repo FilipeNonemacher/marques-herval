@@ -17,10 +17,16 @@ Serviço oficial usado para a malha viária:
 
 `https://zee.rs.gov.br/server/rest/services/1_RSAGUAS/Mapa_basico_SIGRSAGUA/FeatureServer/32`
 
-A extração local contém apenas `RODOVIAS ESTADUAIS`, `RODOVIAS FEDERAIS` e
-`RODOVIAS ESTADUAIS COINCIDENTES`. Foram mantidas as classificações físicas do
-DAER; trechos planejados, implantados ou em obras recebem diferenciação
-tracejada no desenho.
+A extração local contém a malha completa do serviço: rodovias estaduais,
+federais, coincidentes, municipais e vicinais, além dos acessos estaduais,
+federais e municipais necessários para que os entroncamentos permaneçam
+contínuos. A hierarquia visual mantém BR e ERS em destaque e desenha ligações
+locais com traço mais leve. Foram mantidas as classificações físicas do DAER;
+somente trechos ainda planejados recebem diferenciação tracejada no desenho.
+
+Os nomes preservados do mapa-base e as cidades selecionadas são aplicados em
+uma camada vetorial posterior às estradas. Assim, a tipografia permanece acima
+da malha viária, sem caixas opacas e sem interromper visualmente as conexões.
 
 ## Atualização e geração
 

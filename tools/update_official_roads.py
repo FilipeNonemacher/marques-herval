@@ -17,17 +17,18 @@ SERVICE = (
 DEFAULT_DESTINATION = (
     Path(__file__).parent / "data" / "daer-rs-sistema-viario-2026-04.geojson"
 )
-EXPECTED_MINIMUM_FEATURES = 1200
+EXPECTED_MINIMUM_FEATURES = 1600
 
 
 def download(destination: Path) -> tuple[int, int]:
     query = urllib.parse.urlencode(
         {
-            "where": (
-                "REDE IN ('RODOVIAS ESTADUAIS','RODOVIAS FEDERAIS',"
-                "'RODOVIAS ESTADUAIS COINCIDENTES')"
-            ),
-            "outFields": "CODIGO_SRE,REDE,ADMINISTRA,SITUACAO_F",
+            # The connectors classified as access roads, municipal roads and
+            # local roads are required to keep the official network visually
+            # continuous at urban junctions. The layer currently has fewer
+            # than 2,000 records, so one validated request retrieves it whole.
+            "where": "REDE IS NOT NULL",
+            "outFields": "CODIGO_SRE,NOME,REDE,ADMINISTRA,SITUACAO_F",
             "returnGeometry": "true",
             "outSR": "5880",
             # Three metres is well below one pixel even in the 32K atlas, but

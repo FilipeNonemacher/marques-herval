@@ -7,6 +7,7 @@ import base64
 import io
 import json
 import math
+import re
 import tempfile
 import unicodedata
 from pathlib import Path
@@ -41,6 +42,7 @@ MAJOR_CITIES = {
     "Passo Fundo", "Pelotas", "Rio Grande", "Santa Cruz do Sul",
     "Santa Maria", "Santo Ângelo", "Sapucaia do Sul", "São Borja",
     "São Leopoldo", "Uruguaiana", "Viamão",
+    "Porto Alegre",
 }
 
 CITY_DISPLAY_OVERRIDES = {
@@ -63,10 +65,11 @@ CITY_DISPLAY_OVERRIDES = {
 # This oversized river caption conflicts with the Porto Maua callout. The PDF
 # draws every label twice (white outline, then blue fill), at the same origin.
 PORTO_MAUA_URUGUAI_LABEL_ORIGIN = (2264.967, 5239.829)
-MODERN_ASSET_REVISION = "104"
+MODERN_ASSET_REVISION = "105"
 TILE_SIZE = 512
 HIGH_DENSITY_LEVELS = (16000, 32000)
 VECTOR_RENDER_BLOCK_TILES = 4
+LARGEST_TILE_DIRECTORY = "32000-r104"
 OFFICIAL_ROADS = Path(__file__).parent / "data" / "daer-rs-sistema-viario-2026-04.geojson"
 
 # The former road layer came from OpenStreetMap and was drawn as four paired
@@ -84,6 +87,12 @@ LEGACY_ROAD_STROKES = {
 }
 PATH_OPERATORS = {b"m", b"l", b"c", b"v", b"y", b"h", b"re"}
 PATH_END_OPERATORS = {b"S", b"s", b"f", b"F", b"f*", b"B", b"B*", b"b", b"b*", b"n"}
+LABEL_OVERLAY_OPERATORS = {
+    b"q", b"Q", b"cm", b"gs", b"w", b"J", b"j", b"M", b"d", b"ri", b"i",
+    b"CS", b"cs", b"SC", b"SCN", b"sc", b"scn", b"G", b"g", b"RG", b"rg", b"K", b"k",
+    b"BT", b"ET", b"Tf", b"Tc", b"Tw", b"Tz", b"TL", b"Tr", b"Ts",
+    b"Td", b"TD", b"Tm", b"T*", b"Tj", b"TJ", b"'", b'"',
+}
 
 # Official SIRGAS 2000 / Brazil Polyconic coordinates for the state boundary,
 # mapped onto the unchanged vector-map frame in the 6000 x 6000 source PDF.
@@ -238,10 +247,10 @@ def build_clean_pdf(
                         city_labels[(city_name, text_origin[0], text_origin[1], 17.0)] = None
                 removed_cities += 1
                 remove = True
-            elif 25.9 <= current_font_size <= 26.1 and text_origin is not None:
+            elif current_font_size >= 25.9 and text_origin is not None:
                 city_name = canonical_city_name(label)
                 if city_name:
-                    city_labels[(city_name, text_origin[0], text_origin[1], 26.0)] = None
+                    city_labels[(city_name, text_origin[0], text_origin[1], current_font_size)] = None
                     removed_cities += 1
                     remove = True
             elif label == "rio uruguai" and text_origin is not None:
@@ -307,11 +316,28 @@ def projected_to_pdf(easting: float, northing: float) -> tuple[float, float]:
     return x, y
 
 
-def route_label(code: str) -> str | None:
+def route_label(properties: dict[str, object]) -> str | None:
+    name = str(properties.get("NOME") or "").strip().upper()
+    if re.fullmatch(r"(?:BR|ERS|RSC|VRS|MRS)-\d{3}", name):
+        return name
+    code = str(properties.get("CODIGO_SRE") or "")
     if len(code) < 6:
         return None
     prefix = {"B": "BR", "E": "ERS"}.get(code[3])
     return f"{prefix}-{code[:3]}" if prefix else None
+
+
+def road_kind(rede: object, label: str | None) -> str:
+    normalized = normalize_label(rede)
+    if "acess" in normalized:
+        return "accessory"
+    if "municipais" in normalized:
+        return "municipal"
+    if "vicinais" in normalized:
+        return "vicinal"
+    if (label or "").startswith("BR-") or "federais" in normalized:
+        return "federal"
+    return "state"
 
 
 def polyline_length(points: list[tuple[float, float]]) -> float:
@@ -356,23 +382,47 @@ def draw_grouped_paths(
     groups: dict[tuple[str, str], list[list[tuple[float, float]]]],
     casing: bool,
 ) -> None:
+    casing_widths = {
+        "federal": 3.25,
+        "state": 2.55,
+        "accessory": 2.05,
+        "vicinal": 1.85,
+        "municipal": 1.65,
+    }
+    road_widths = {
+        "federal": 2.25,
+        "state": 1.65,
+        "accessory": 1.18,
+        "vicinal": 1.02,
+        "municipal": 0.88,
+    }
+    road_colors = {
+        "federal": "#cf9f4d",
+        "state": "#c9ad72",
+        "accessory": "#c6ad77",
+        "vicinal": "#bea97d",
+        "municipal": "#b7b69b",
+    }
     for (network, status), polylines in groups.items():
-        federal = network == "federal"
         is_planned = "planejada" in status
         is_work = "obras" in status
         is_unpaved = "implantada" in status
         if casing:
-            color = "#f8e6b5" if not (is_planned or is_work or is_unpaved) else "#f4ecd8"
-            width = 3.25 if federal else 2.55
+            color = "#f8e6b5" if network in {"federal", "state"} else "#f1ead9"
+            if is_planned or is_work or is_unpaved:
+                color = "#f4ecd8"
+            width = casing_widths[network]
             dash = []
         else:
             if is_unpaved:
                 color = "#b9a47b"
             elif is_work:
-                color = "#c49952" if federal else "#bea067"
+                color = "#c49952" if network == "federal" else "#bea067"
             else:
-                color = "#cf9f4d" if federal else "#c9ad72"
-            width = (2.05 if federal else 1.48) if is_unpaved else (2.25 if federal else 1.65)
+                color = road_colors[network]
+            width = road_widths[network]
+            if is_unpaved:
+                width *= 0.92
             # Implemented and work-in-progress segments are real, continuous
             # roads. Only routes that are still planned use a broken stroke.
             dash = [8, 5] if is_planned else []
@@ -423,6 +473,24 @@ def draw_city_labels(
         pdf.restoreState()
 
 
+def build_label_overlay(source: Path) -> bytes:
+    """Return every retained map caption as a transparent vector-only page."""
+    reader = PdfReader(source)
+    writer = PdfWriter()
+    writer.append_pages_from_reader(reader)
+    page = writer.pages[0]
+    content = ContentStream(page.get_contents(), writer)
+    content.operations = [
+        (operands, operator)
+        for operands, operator in content.operations
+        if operator in LABEL_OVERLAY_OPERATORS
+    ]
+    page.replace_contents(content)
+    buffer = io.BytesIO()
+    writer.write(buffer)
+    return buffer.getvalue()
+
+
 def add_official_roads(
     source: Path,
     destination: Path,
@@ -445,17 +513,16 @@ def add_official_roads(
         if geometry.get("type") != "LineString":
             continue
         properties = feature.get("properties") or {}
-        label = route_label(str(properties.get("CODIGO_SRE") or ""))
-        if not label:
-            continue
+        label = route_label(properties)
         coordinates = geometry.get("coordinates") or []
         points = [projected_to_pdf(float(x), float(y)) for x, y, *_ in coordinates]
         if len(points) < 2:
             continue
-        network = "federal" if label.startswith("BR-") else "state"
+        network = road_kind(properties.get("REDE"), label)
         status = normalize_label(properties.get("SITUACAO_F") or "")
         groups.setdefault((network, status), []).append(points)
-        label_paths.setdefault(label, []).append(points)
+        if label and network in {"federal", "state", "vicinal"}:
+            label_paths.setdefault(label, []).append(points)
         feature_count += 1
 
     overlay_buffer = io.BytesIO()
@@ -516,6 +583,11 @@ def add_official_roads(
     page = reader.pages[0]
     official_overlay = PdfReader(overlay_buffer).pages[0]
     page.merge_page(official_overlay)
+    # Roads are deliberately merged before this vector text copy. River,
+    # regional and retained base-map captions therefore remain crisp and above
+    # the complete road network without opaque boxes or interrupted strokes.
+    label_overlay = PdfReader(io.BytesIO(build_label_overlay(source))).pages[0]
+    page.merge_page(label_overlay)
     writer = PdfWriter()
     writer.add_page(page)
     writer.add_metadata(
@@ -551,7 +623,7 @@ def save_webp_tile(image: Image.Image, destination: Path) -> None:
 def tile_level_directory(level: int) -> str:
     """Version the largest atlas so a browser cannot lock a stale delivery folder."""
     if level == max(HIGH_DENSITY_LEVELS):
-        return f"{level}-r{MODERN_ASSET_REVISION}"
+        return LARGEST_TILE_DIRECTORY
     return str(level)
 
 
